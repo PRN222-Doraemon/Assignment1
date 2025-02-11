@@ -1,0 +1,22 @@
+﻿@model LoginVM
+<form method="post" asp-action="Login">
+    <div class="container border p-4">
+        <div class="row text-center">
+            <h1>Login</h1>
+        </div>
+        <div asp-validation-summary="ModelOnly"></div>
+        <div class="row">
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="@Model.AccountEmail" class="form-control" placeholder="Email..." />
+                <span asp-validation-for="@Model.AccountEmail" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <input asp-for="@Model.AccountPassword" class="form-control" type="password" placeholder="Password..." />
+                <span asp-validation-for="@Model.AccountPassword" class="text-danger"></span>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 pb-2">
+                <button type="submit" class="form-control btn btn-success" value="Submit">Login</button>
+            </div>
+        </div>
+    </div>
+</form>>

@@ -1,0 +1,51 @@
+﻿@model BusinessObjects.Category
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center my-4">Create New Category</h1>
+
+<div class="card shadow-lg">
+    <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Category Information</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger" style="display:none;"></div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.CategoryName" class="form-label fw-bold"></label>
+                <input asp-for="@Model.CategoryName" class="form-control" />
+                <span asp-validation-for="@Model.CategoryName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.CategoryDesciption" class="form-label fw-bold"></label>
+                <input asp-for="@Model.CategoryDesciption" class="form-control" />
+                <span asp-validation-for="@Model.CategoryDesciption" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="@Model.ParentCategory" class="form-label fw-bold"></label>
+                <select asp-for="@Model.ParentCategoryId" class="form-select" asp-items="ViewBag.ParentCategoryId"></select>
+                <span asp-validation-for="@Model.ParentCategoryId" class="text-danger"></span>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Create
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<BusinessObjects.SystemAccount>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Account List</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Account Name</th>
+            <th>Account Email</th>
+            <th>Account Role</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @item.AccountName
+            </td>
+            <td>
+                @item.AccountEmail
+            </td>
+            <td>
+                @(item.AccountRole == 1 ? "Staff" : "Lecturer")
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.AccountId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.AccountId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.AccountId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

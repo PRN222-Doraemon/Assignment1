@@ -1,0 +1,100 @@
+﻿@model NewsArticleVM
+
+@{
+    ViewData["Title"] = "Edit News Article";
+}
+
+<h1 class="text-center my-4">@ViewData["Title"]</h1>
+
+<div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">Category Information</h4>
+    </div>
+    <div class="card-body">
+            <form asp-action="Edit" class="needs-validation" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <input type="hidden" asp-for="NewsArticleId" />
+                <input type="hidden" asp-for="CreatedById" />
+                <input type="hidden" asp-for="NewsStatus" />
+                <input type="hidden" asp-for="CreatedById" />
+
+                <!-- News Title -->
+                <div class="form-group mb-3">
+                    <label asp-for="NewsTitle" class="form-label"></label>
+                    <input asp-for="NewsTitle" class="form-control" />
+                    <span asp-validation-for="NewsTitle" class="text-danger"></span>
+                </div>
+
+                <!-- Headline -->
+                <div class="form-group mb-3">
+                    <label asp-for="Headline" class="form-label"></label>
+                    <input asp-for="Headline" class="form-control" />
+                    <span asp-validation-for="Headline" class="text-danger"></span>
+                </div>
+
+                <!-- Created Date (Read-Only) -->
+                <div class="form-group mb-3">
+                    <label asp-for="CreatedDate" class="form-label"></label>
+                    <input asp-for="CreatedDate" class="form-control" readonly />
+                </div>
+
+                <!-- Modified Date (Read-Only) -->
+                <div class="form-group mb-3">
+                    <label asp-for="ModifiedDate" class="form-label"></label>
+                    <input asp-for="ModifiedDate" class="form-control" readonly />
+                </div>
+
+                <!-- News Content -->
+                <div class="form-group mb-3">
+                    <label asp-for="NewsContent" class="form-label"></label>
+                    <textarea asp-for="NewsContent" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="NewsContent" class="text-danger"></span>
+                </div>
+
+                <!-- News Source -->
+                <div class="form-group mb-3">
+                    <label asp-for="NewsSource" class="form-label"></label>
+                    <input asp-for="NewsSource" class="form-control" />
+                    <span asp-validation-for="NewsSource" class="text-danger"></span>
+                </div>
+
+                <!-- Category -->
+                <div class="form-group mb-3">
+                    <label asp-for="CategoryId" class="form-label"></label>
+                    <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId"></select>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </div>
+
+                <!-- Tags -->
+                <div class="mb-3">
+                    <label asp-for="TagIds" class="control-label">Tags</label>
+                    <select asp-for="TagIds" class="form-control" asp-items="ViewBag.TagId" multiple>
+                    </select>
+                    <small class="form-text text-muted">Hold Ctrl (Cmd on Mac) to select multiple tags.</small>
+                </div>
+
+                <!-- News Status (Read-Only) -->
+                <div class="form-group mb-3">
+                    <label asp-for="@Model.NewsStatus" class="form-label"></label>
+                    <input type="text" class="form-control" readonly value="@(Model.NewsStatus ? "Active" : "Inactive")" />                    
+                </div>
+
+                <!-- Submit Button -->
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save
+                </button>
+                <a asp-action="Index" class="btn btn-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to List
+                </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
