@@ -6,16 +6,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace DataAccessLayer;
 
-public partial class FunewsManagementContext : DbContext
-{
-    public FunewsManagementContext()
-    {
-    }
+public partial class FunewsManagementContext : DbContext {
+    public FunewsManagementContext() {}
 
     public FunewsManagementContext(DbContextOptions<FunewsManagementContext> options)
-        : base(options)
-    {
-    }
+        : base(options) {}
 
     public virtual DbSet<Category> Categories { get; set; }
 
@@ -31,8 +26,7 @@ public partial class FunewsManagementContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>(entity =>
-        {
+        modelBuilder.Entity<Category>(entity => {
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -45,8 +39,7 @@ public partial class FunewsManagementContext : DbContext
                 .HasConstraintName("FK_Category_Category");
         });
 
-        modelBuilder.Entity<NewsArticle>(entity =>
-        {
+        modelBuilder.Entity<NewsArticle>(entity => {
             entity.ToTable("NewsArticle");
 
             entity.Property(e => e.NewsArticleId)
@@ -73,8 +66,7 @@ public partial class FunewsManagementContext : DbContext
                 .HasConstraintName("FK_NewsArticle_SystemAccount");
         });
 
-        modelBuilder.Entity<SystemAccount>(entity =>
-        {
+        modelBuilder.Entity<SystemAccount>(entity => {
             entity.HasKey(e => e.AccountId);
 
             entity.ToTable("SystemAccount");
@@ -87,8 +79,7 @@ public partial class FunewsManagementContext : DbContext
             entity.Property(e => e.AccountPassword).HasMaxLength(70);
         });
 
-        modelBuilder.Entity<Tag>(entity =>
-        {
+        modelBuilder.Entity<Tag>(entity => {
             entity.HasKey(e => e.TagId).HasName("PK_HashTag");
 
             entity.ToTable("Tag");
@@ -100,31 +91,31 @@ public partial class FunewsManagementContext : DbContext
             entity.Property(e => e.TagName).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<NewsTag>(entity =>
-        {
+        modelBuilder.Entity<NewsTag>(entity => {
             entity.HasKey(nt => new { nt.NewsArticleID, nt.TagID });
             entity.ToTable("NewsTag");
 
             entity.HasOne(nt => nt.NewsArticle)
-                  .WithMany(na => na.NewsTags)
-                  .HasForeignKey(nt => nt.NewsArticleID)
-                  .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(na => na.NewsTags)
+                .HasForeignKey(nt => nt.NewsArticleID)
+                .OnDelete(DeleteBehavior.Cascade);
 
             entity.HasOne(nt => nt.Tag)
-                  .WithMany(t => t.NewsTags) 
-                  .HasForeignKey(nt => nt.TagID)
-                  .OnDelete(DeleteBehavior.Cascade);
+                .WithMany(t => t.NewsTags)
+                .HasForeignKey(nt => nt.TagID)
+                .OnDelete(DeleteBehavior.Cascade);
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    /// <summary>
+    /// Get connection string from the sql server
+    /// </summary>
+    /// <returns></returns>
     private string GetConnectionString()
     {
         IConfiguration configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", true, true).Build();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true, true).Build();
         return configuration["ConnectionStrings:DefaultConnectionString"];
     }
 }
