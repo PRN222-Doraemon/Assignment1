@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.BusinessObjects", "BusinessObjects\FUNewsManagement.BusinessObjects.csproj", "{826D60C9-04A1-47A8-88A0-D2042F09F15C}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Repositories", "DataAccessLayer\FUNewsManagement.Repositories.csproj", "{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Services", "Services\FUNewsManagement.Services.csproj", "{09B09276-96F1-45DD-95B0-2364039BFA07}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagementMVC", "FUNewsManagementMVC\FUNewsManagementMVC.csproj", "{53386D7B-DB94-48B6-A83E-F1141FDB3D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.BusinessObjects", "FUNewsManagement.BusinessObjects\FUNewsManagement.BusinessObjects.csproj", "{0E4D1919-85EC-4D29-B595-F4CC465E6FB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Repositories", "FUNewsManagement.Repositories\FUNewsManagement.Repositories.csproj", "{86061DFB-A6E8-48AC-ABDF-092351B2C27C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Services", "FUNewsManagement.Services\FUNewsManagement.Services.csproj", "{7410AED2-A435-43A9-B993-37098E42C7A5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,22 +17,22 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{826D60C9-04A1-47A8-88A0-D2042F09F15C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{826D60C9-04A1-47A8-88A0-D2042F09F15C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{826D60C9-04A1-47A8-88A0-D2042F09F15C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{826D60C9-04A1-47A8-88A0-D2042F09F15C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09B09276-96F1-45DD-95B0-2364039BFA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09B09276-96F1-45DD-95B0-2364039BFA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09B09276-96F1-45DD-95B0-2364039BFA07}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09B09276-96F1-45DD-95B0-2364039BFA07}.Release|Any CPU.Build.0 = Release|Any CPU
 		{53386D7B-DB94-48B6-A83E-F1141FDB3D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{53386D7B-DB94-48B6-A83E-F1141FDB3D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53386D7B-DB94-48B6-A83E-F1141FDB3D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53386D7B-DB94-48B6-A83E-F1141FDB3D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E4D1919-85EC-4D29-B595-F4CC465E6FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E4D1919-85EC-4D29-B595-F4CC465E6FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E4D1919-85EC-4D29-B595-F4CC465E6FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E4D1919-85EC-4D29-B595-F4CC465E6FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86061DFB-A6E8-48AC-ABDF-092351B2C27C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86061DFB-A6E8-48AC-ABDF-092351B2C27C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86061DFB-A6E8-48AC-ABDF-092351B2C27C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86061DFB-A6E8-48AC-ABDF-092351B2C27C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7410AED2-A435-43A9-B993-37098E42C7A5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7410AED2-A435-43A9-B993-37098E42C7A5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7410AED2-A435-43A9-B993-37098E42C7A5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7410AED2-A435-43A9-B993-37098E42C7A5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
