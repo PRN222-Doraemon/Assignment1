@@ -1,8 +1,6 @@
 using AutoMapper;
 using FUNewsManagement.Repositories.Extensions;
 using FUNewsManagement.services.Extensions;
-using FUNewsManagement.Services;
-using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC;
 
 var builder = WebApplication.CreateBuilder(args);

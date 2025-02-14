@@ -16,7 +16,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services\FUNewsManagement.Services.csproj" />
+    <ProjectReference Include="..\Services\FUNewsManagement.Services.csproj">
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>

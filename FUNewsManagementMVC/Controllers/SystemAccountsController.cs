@@ -1,4 +1,5 @@
-﻿using FUNewsManagement.Services.IServices;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC.Helpers;
 using FUNewsManagementMVC.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -52,7 +53,7 @@ namespace FUNewsManagementMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                var account = _systemAccountService.CheckLogin(loginVM.AccountEmail, loginVM.AccountPassword);
+                var account = await _systemAccountService.CheckLogin(loginVM.AccountEmail, loginVM.AccountPassword);
                 if (account != null)
                 {
                     HttpContext.Session.SetString(AppCts.Session.UserName, account.AccountName);
@@ -94,7 +95,7 @@ namespace FUNewsManagementMVC.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_systemAccountService.UpdateSystemAccount(systemAccount))
+                if (await _systemAccountService.UpdateSystemAccount(systemAccount))
                 {
                     TempData["success"] = "Successfully updated!";
                 }
@@ -109,13 +110,13 @@ namespace FUNewsManagementMVC.Controllers
         // GET: SystemAccounts/DeleteAsync/5
         public async Task<IActionResult> Delete([FromRoute] short id)
         {
-            var systemAccount = _systemAccountService.GetAccountById(id);
+            var systemAccount = await _systemAccountService.GetAccountById(id);
             if (systemAccount == null)
             {
                 return NotFound();
             }
 
-            if (_systemAccountService.DeleteSystemAccount(systemAccount))
+            if (await _systemAccountService.DeleteSystemAccount(systemAccount))
             {
                 TempData["success"] = "Successfully deleted!";
             }

@@ -1,15 +1,6 @@
-﻿using FUNewsManagement.Repositories.Data;
-using FUNewsManagement.Repositories.IRepositories;
-using FUNewsManagement.Repositories;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FUNewsManagement.Services;
 using FUNewsManagement.Services.IServices;
-using FUNewsManagement.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace FUNewsManagement.services.Extensions
 {
