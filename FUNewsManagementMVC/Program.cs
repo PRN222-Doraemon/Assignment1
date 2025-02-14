@@ -2,15 +2,32 @@ using AutoMapper;
 using FUNewsManagement.Repositories.Extensions;
 using FUNewsManagement.services.Extensions;
 using FUNewsManagementMVC;
+using FUNewsManagementMVC.Authentications;
 using FUNewsManagementMVC.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// AddAsync all services.
+// =========================
+// === Add Services
+// =========================
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddRepositoriesLayer(builder.Configuration);
 builder.Services.AddServicesLayer();
 builder.Services.AddApplicationLayer();
+
+// Add singleton adminAccount
+var adminAccount = new AdminCredentials()
+{
+    Email = builder.Configuration["AdminCredentials:email"],
+    Password = builder.Configuration["AdminCredentials:password"],
+};
+
+builder.Services.AddSingleton<AdminCredentials>(adminAccount);
+
+// =========================
+// === Build App
+// =========================
 
 var app = builder.Build();
 

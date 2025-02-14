@@ -33,7 +33,7 @@
 						{
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="NewsArticles" asp-action="Index">
-									New
+									News
 									Article
 								</a>
 							</li>
@@ -43,6 +43,15 @@
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-area="" asp-controller="SystemAccounts"
 								   asp-action="Index">Manage User</a>
+							</li>
+						}
+						else
+						{
+							<li class="nav-item">
+								<a class="nav-link text-dark" asp-area="" asp-controller="NewsArticles" asp-action="Index">
+									News
+									Article
+								</a>
 							</li>
 						}
 					</ul>

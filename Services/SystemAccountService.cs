@@ -1,6 +1,8 @@
 ﻿using FUNewsManagement.BusinessObjects;
 using FUNewsManagement.Repositories.IRepositories;
 using FUNewsManagement.Services.IServices;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
 
 namespace FUNewsManagement.Services
 {
@@ -16,7 +18,8 @@ namespace FUNewsManagement.Services
         // === Constructors
         // =================================
 
-        public SystemAccountService(ISystemAccountRepository repo)
+        public SystemAccountService(ISystemAccountRepository repo,
+            IConfiguration config)
         {
             _repo = repo;
         }

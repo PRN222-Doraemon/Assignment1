@@ -11,11 +11,8 @@ public partial class FunewsManagementContext : DbContext
     // ====================================
 
     public virtual DbSet<Category> Categories { get; set; }
-
     public virtual DbSet<NewsArticle> NewsArticles { get; set; }
-
     public virtual DbSet<SystemAccount> SystemAccounts { get; set; }
-
     public virtual DbSet<Tag> Tags { get; set; }
     public virtual DbSet<NewsTag> NewsTags { get; set; }
 
@@ -31,9 +28,6 @@ public partial class FunewsManagementContext : DbContext
     // ====================================
     // === Methods
     // ====================================
-
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //    => optionsBuilder.UseSqlServer(GetConnectionString());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -122,16 +116,4 @@ public partial class FunewsManagementContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade);
         });
     }
-
-    ///// <summary>
-    ///// Get connection string from the sql server
-    ///// </summary>
-    ///// <returns></returns>
-    //private string GetConnectionString()
-    //{
-    //    IConfiguration configuration = new ConfigurationBuilder()
-    //        .SetBasePath(Directory.GetCurrentDirectory())
-    //        .AddJsonFile("appsettings.json", true, true).Build();
-    //    return configuration["ConnectionStrings:DefaultConnectionString"];
-    //}
 }

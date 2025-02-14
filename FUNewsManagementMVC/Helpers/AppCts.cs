@@ -17,6 +17,7 @@ public static class AppCts
     {
         public const string Staff = "1";
         public const string Lecturer = "2";
+        public const string Admin = "3";
     }
 
     public static class Status

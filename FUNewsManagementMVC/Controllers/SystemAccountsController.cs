@@ -1,5 +1,6 @@
 ﻿using FUNewsManagement.BusinessObjects;
 using FUNewsManagement.Services.IServices;
+using FUNewsManagementMVC.Authentications;
 using FUNewsManagementMVC.Helpers;
 using FUNewsManagementMVC.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,14 +14,18 @@ namespace FUNewsManagementMVC.Controllers
         // ===========================
 
         private readonly ISystemAccountService _systemAccountService;
+        private readonly AdminCredentials _adminCredentials;
 
         // ===========================
         // === Constructors
         // ===========================
 
-        public SystemAccountsController(ISystemAccountService systemAccountService)
+        public SystemAccountsController(
+            ISystemAccountService systemAccountService,
+            AdminCredentials adminCredentials)
         {
             _systemAccountService = systemAccountService;
+            _adminCredentials = adminCredentials;
         }
 
         // ===========================
@@ -53,6 +58,16 @@ namespace FUNewsManagementMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Check Admin login first
+                if (loginVM.AccountEmail.Equals(_adminCredentials.Email) &&
+                    loginVM.AccountPassword.Equals(_adminCredentials.Password))
+                {
+                    HttpContext.Session.SetString(AppCts.Session.UserName, _adminCredentials.Username);
+                    HttpContext.Session.SetInt32(AppCts.Session.UserRole, int.Parse(_adminCredentials.Role));
+                    HttpContext.Session.SetInt32(AppCts.Session.UserId, _adminCredentials.Id);
+                    return RedirectToAction("Index", "NewsArticles");
+                }
+
                 var account = await _systemAccountService.CheckLogin(loginVM.AccountEmail, loginVM.AccountPassword);
                 if (account != null)
                 {
@@ -70,6 +85,7 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: SystemAccounts/Login
+        [HttpGet]
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();

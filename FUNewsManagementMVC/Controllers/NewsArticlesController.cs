@@ -10,12 +10,21 @@ namespace FUNewsManagementMVC.Controllers
 {
     public class NewsArticlesController : Controller
     {
+        // ===========================
+        // === Props & Fields
+        // ===========================
+
         private readonly INewsArticleService _contextNewsArticle;
         private readonly ISystemAccountService _contextSystemAccount;
         private readonly ICategoryService _contextCategory;
         private readonly ITagService _contextTag;
         private readonly IMapper _mapper;
         private readonly INewsTagService _contextNewsTag;
+
+        // ===========================
+        // === Constructors
+        // ===========================
+
         public NewsArticlesController(INewsArticleService contextNewsArticle, ISystemAccountService contextSystemAccount,
             ICategoryService contextCategory, ITagService contextTag, IMapper mapper, INewsTagService contextNewsTag)
         {
@@ -27,30 +36,45 @@ namespace FUNewsManagementMVC.Controllers
             _contextNewsTag = contextNewsTag;
         }
 
-        // GET: NewsArticles
-        [AuthorizationAttribute]
-        public async Task<IActionResult> Index(string filterSelect)
+        // ===========================
+        // === Methods
+        // ===========================
+
+        // GET: NewsArticles?filterSelect=mine?searchName=vukimduy
+        [HttpGet]
+        public async Task<IActionResult> Index(
+            [FromQuery] string filterSelect,
+            [FromQuery] string searchName)
         {
             ViewBag.CurrentFilter = filterSelect;
-            var userId = (short)HttpContext.Session.GetInt32(AppCts.Session.UserId);
             IEnumerable<NewsArticle> newsArticles;
-            switch (filterSelect)
+            var userId = HttpContext?.Session?.GetInt32(AppCts.Session.UserId);
+
+            if (userId != null)
             {
-                case "all":
-                    newsArticles = await _contextNewsArticle.GetNewsArticles();
-                    break;
-                case "mine":
-                    newsArticles = await _contextNewsArticle.GetNewsArticlesByCreatedUserId(userId);
-                    break;
-                default:
-                    newsArticles = await _contextNewsArticle.GetNewsArticles();
-                    break;
+                switch (filterSelect)
+                {
+                    case "all":
+                        newsArticles = await _contextNewsArticle.GetNewsArticles(searchName);
+                        break;
+                    case "mine":
+                        newsArticles = await _contextNewsArticle.GetNewsArticlesByCreatedUserId((short)userId);
+                        break;
+                    default:
+                        newsArticles = await _contextNewsArticle.GetNewsArticles(searchName);
+                        break;
+                }
             }
+            else
+            {
+                newsArticles = await _contextNewsArticle.GetNewsArticles();
+            }
+
             return View(newsArticles);
         }
 
         // GET: NewsArticles/Details/5
-        [AuthorizationAttribute]
+        [HttpGet]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -67,7 +91,7 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: NewsArticles/Create
-        [AuthorizationAttribute("1")]
+        [Authorization("1")]
         public async Task<IActionResult> Create()
         {
             ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategories(), "CategoryId", "CategoryName");
