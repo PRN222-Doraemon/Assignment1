@@ -18,4 +18,10 @@ public static class AppCts
         public const string Staff = "1";
         public const string Lecturer = "2";
     }
+
+    public static class Status
+    {
+        public const string Active = "1";
+        public const string Inactive = "1";
+    }
 }

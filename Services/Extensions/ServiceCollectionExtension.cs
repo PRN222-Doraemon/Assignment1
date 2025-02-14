@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FUNewsManagement.services.Extensions
 {
-    public static class ServiceCollectionExtension
+    public static partial class ServiceCollectionExtension
     {
         public static void AddServicesLayer(this IServiceCollection services)
         {

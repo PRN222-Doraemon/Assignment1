@@ -1,7 +1,10 @@
 ﻿@{
 	ViewData["Title"] = "News Articles";
-	var userId = ViewContext.HttpContext.Session.GetInt32("UserId");
+	var userId = ViewContext.HttpContext.Session.GetInt32(AppCts.Session.UserId);
 }
+
+@* HTML *@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,8 +14,8 @@
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" />
-	<link rel="stylesheet" href="~/FUNewsManagementMVC.styles.css" asp-append-version="true" />
 	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="~/FUNewsManagementMVC.styles.css" asp-append-version="true" />
 </head>
 <body>
 	<header>

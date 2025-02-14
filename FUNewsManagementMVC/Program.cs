@@ -2,6 +2,7 @@ using AutoMapper;
 using FUNewsManagement.Repositories.Extensions;
 using FUNewsManagement.services.Extensions;
 using FUNewsManagementMVC;
+using FUNewsManagementMVC.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,18 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRepositoriesLayer(builder.Configuration);
 builder.Services.AddServicesLayer();
-
-// AddAsync automapper
-IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
-builder.Services.AddSingleton(mapper);
-builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddSession(options =>
-{
-    options.IdleTimeout = TimeSpan.FromMinutes(20); //Set session timeout
-    options.Cookie.HttpOnly = true; // For sercurity
-    options.Cookie.IsEssential = true; // Ensure session cookie is always created
-});
+builder.Services.AddApplicationLayer();
 
 var app = builder.Build();
 

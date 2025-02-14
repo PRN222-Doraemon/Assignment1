@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace FUNewsManagement.Repositories.Extensions
 {
-    public static class ServiceCollectionExtension
+    public static partial class ServiceCollectionExtension
     {
         public static void AddRepositoriesLayer(this IServiceCollection services, IConfiguration configuration)
         {
