@@ -1,9 +1,11 @@
 ﻿using FUNewsManagement.BusinessObjects;
 using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC.Authentications;
+using FUNewsManagementMVC.Extensions;
 using FUNewsManagementMVC.Helpers;
 using FUNewsManagementMVC.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FUNewsManagementMVC.Controllers
 {
@@ -93,14 +95,16 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: SystemAccounts/Edit/5
+        [HttpGet]
+        [Authorization(AppCts.Roles.Admin)]
         public async Task<IActionResult> Edit([FromRoute] short id)
         {
-            var systemAccount = _systemAccountService.GetAccountById(id);
+            var systemAccount = await _systemAccountService.GetAccountById(id);
             if (systemAccount == null)
             {
                 return NotFound();
             }
-            //ViewData["AccountRoles"] = new SelectList(new List());
+            ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
             return View(systemAccount);
         }
 

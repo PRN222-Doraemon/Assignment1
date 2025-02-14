@@ -1,4 +1,4 @@
-﻿namespace FUNewsManagementMVC.Helpers;
+﻿namespace FUNewsManagement.BusinessObjects;
 
 public static class AppCts
 {

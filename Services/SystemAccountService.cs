@@ -58,5 +58,15 @@ namespace FUNewsManagement.Services
         {
             return await _repo.UpdateAsync(account) != null;
         }
+
+        public List<int> GetAllRoles()
+        {
+            return new List<int>()
+            {
+                int.Parse(AppCts.Roles.Lecturer),
+                int.Parse(AppCts.Roles.Admin),
+                int.Parse(AppCts.Roles.Staff),
+            };
+        }
     }
 }
