@@ -1,64 +1,78 @@
-﻿using BusinessObjects;
-using Repositories;
-using Repositories.IRepositories;
-using Services.IService;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Repositories.IRepositories;
+using FUNewsManagement.Services.IServices;
 
-namespace Services
+namespace FUNewsManagement.Services
 {
     public class NewsArticleService : INewsArticleService
     {
-        private readonly INewsArticleRepository _repo;
-        public NewsArticleService()
+        // =================================
+        // === Fields & Props
+        // =================================
+
+        private readonly INewsArticleRepository _newsRepo;
+
+        // =================================
+        // === Constructors
+        // =================================
+
+        public NewsArticleService(INewsArticleRepository newsRepo)
         {
-            _repo = new NewsArticleRepository(); 
+            _newsRepo = newsRepo;
         }
-        public async Task AddNewsArticle(NewsArticle p)
+
+        // =================================
+        // === Methods
+        // =================================
+
+        public async Task<bool> AddNewsArticle(NewsArticle p)
         {
-            var existingNewsArticle = await _repo.GetNewsArticleById(p.NewsArticleId);
+            var existingNewsArticle = await _newsRepo.GetAsync(n => n.NewsArticleId == p.NewsArticleId);
             if (existingNewsArticle != null)
             {
                 throw new ArgumentException("This ID has already exist!");
             }
             p.CreatedDate = DateTime.Now;
             p.ModifiedDate = DateTime.Now;
-            await _repo.AddNewsArticle(p);
+            return await _newsRepo.AddAsync(p) != null;
         }
 
-        public async Task DeleteNewsArticle(string id)
+        public async Task<bool> DeleteNewsArticle(string id)
         {
-            var obj = await _repo.GetNewsArticleById(id);
+            var obj = await _newsRepo.GetAsync(o => o.NewsArticleId == id);
             if (obj == null)
             {
-                throw new Exception($"News arrticle with {id} not found!");
+                throw new Exception($"News article with {id} not found!");
             }
             obj.NewsStatus = false;
-            await _repo.UpdateNewsArticle(obj);
+            return await _newsRepo.UpdateAsync(obj) != null;
         }
 
         public async Task<List<NewsArticle>> GetNewsArticleByCategoryId(int id)
         {
-            return await _repo.GetNewsArticleByCategoryId(id);
+            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CategoryId == id);
         }
 
         public async Task<NewsArticle?> GetNewsArticleById(string id)
         {
-            return await _repo.GetNewsArticleById(id);
+            return await _newsRepo.GetAsync(n => n.NewsArticleId == id);
         }
 
-        public async Task<List<NewsArticle>> GetNewsArticles()
+        public async Task<List<NewsArticle>> GetNewsArticles(string? searchName = null)
         {
-            return await _repo.NewsArticles();
+            return (List<NewsArticle>)await _newsRepo
+                .GetAllAsync(n => string.IsNullOrEmpty(searchName) || n.NewsTitle!.Contains(searchName));
         }
 
         public async Task<List<NewsArticle>> GetNewsArticlesByCreatedUserId(short createdById)
         {
-            return await _repo.NewsArticlesByCreatedUserId(createdById);
+            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CreatedById == createdById);
         }
 
-        public async Task UpdateNewsArticle(NewsArticle p)
+        public async Task<bool> UpdateNewsArticle(NewsArticle p)
         {
             p.ModifiedDate = DateTime.Now;
-            await _repo.UpdateNewsArticle(p);
+            return await _newsRepo.UpdateAsync(p) != null;
         }
     }
 }

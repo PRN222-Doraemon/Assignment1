@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
-namespace FUNewsManagementMVC.Helpers {
-    public class AuthorizationAttribute : ActionFilterAttribute {
+namespace FUNewsManagementMVC.Helpers
+{
+    public class AuthorizationAttribute : ActionFilterAttribute
+    {
         private readonly string _requiredRole;
 
         public AuthorizationAttribute(string requiredRole = null)
@@ -14,16 +16,19 @@ namespace FUNewsManagementMVC.Helpers {
         {
             // Authentication
             var userId = context.HttpContext.Session.GetInt32(AppCts.Session.UserId);
-            if (userId == null){
+            if (userId == null)
+            {
                 context.Result = new RedirectToActionResult("Login", "SystemAccounts", null);
                 return;
             }
 
             // Authorization
-            if (_requiredRole != null){
+            if (_requiredRole != null)
+            {
                 var userRole = context.HttpContext.Session.GetInt32(AppCts.Session.UserRole);
 
-                if (userRole == null || userRole.ToString() != _requiredRole){
+                if (userRole == null || userRole.ToString() != _requiredRole)
+                {
                     // if role is invalid, redirect to accessDenied page
                     context.Result = new RedirectToActionResult("AccessDenied", "SystemAccounts", null);
                 }

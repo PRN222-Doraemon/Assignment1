@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using BusinessObjects;
+﻿using FUNewsManagement.BusinessObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
-namespace DataAccessLayer;
+namespace FUNewsManagement.Repositories.Data;
 
-public partial class FunewsManagementContext : DbContext {
-    public FunewsManagementContext() {}
-
-    public FunewsManagementContext(DbContextOptions<FunewsManagementContext> options)
-        : base(options) {}
+public partial class FunewsManagementContext : DbContext
+{
+    // ====================================
+    // === Dbsets
+    // ====================================
 
     public virtual DbSet<Category> Categories { get; set; }
 
@@ -21,12 +19,26 @@ public partial class FunewsManagementContext : DbContext {
     public virtual DbSet<Tag> Tags { get; set; }
     public virtual DbSet<NewsTag> NewsTags { get; set; }
 
+    // ====================================
+    // === Constructors
+    // ====================================
+
+    public FunewsManagementContext() { }
+
+    public FunewsManagementContext(DbContextOptions<FunewsManagementContext> options)
+        : base(options) { }
+
+    // ====================================
+    // === Methods
+    // ====================================
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         => optionsBuilder.UseSqlServer(GetConnectionString());
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Category>(entity => {
+        modelBuilder.Entity<Category>(entity =>
+        {
             entity.ToTable("Category");
 
             entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
@@ -39,7 +51,8 @@ public partial class FunewsManagementContext : DbContext {
                 .HasConstraintName("FK_Category_Category");
         });
 
-        modelBuilder.Entity<NewsArticle>(entity => {
+        modelBuilder.Entity<NewsArticle>(entity =>
+        {
             entity.ToTable("NewsArticle");
 
             entity.Property(e => e.NewsArticleId)
@@ -66,7 +79,8 @@ public partial class FunewsManagementContext : DbContext {
                 .HasConstraintName("FK_NewsArticle_SystemAccount");
         });
 
-        modelBuilder.Entity<SystemAccount>(entity => {
+        modelBuilder.Entity<SystemAccount>(entity =>
+        {
             entity.HasKey(e => e.AccountId);
 
             entity.ToTable("SystemAccount");
@@ -79,7 +93,8 @@ public partial class FunewsManagementContext : DbContext {
             entity.Property(e => e.AccountPassword).HasMaxLength(70);
         });
 
-        modelBuilder.Entity<Tag>(entity => {
+        modelBuilder.Entity<Tag>(entity =>
+        {
             entity.HasKey(e => e.TagId).HasName("PK_HashTag");
 
             entity.ToTable("Tag");
@@ -91,7 +106,8 @@ public partial class FunewsManagementContext : DbContext {
             entity.Property(e => e.TagName).HasMaxLength(50);
         });
 
-        modelBuilder.Entity<NewsTag>(entity => {
+        modelBuilder.Entity<NewsTag>(entity =>
+        {
             entity.HasKey(nt => new { nt.NewsArticleID, nt.TagID });
             entity.ToTable("NewsTag");
 

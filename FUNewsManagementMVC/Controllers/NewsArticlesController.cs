@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BusinessObjects;
-using DataAccessLayer;
-using Services.IService;
-using Services;
-using Microsoft.Extensions.Configuration.UserSecrets;
+﻿using AutoMapper;
+using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC.Helpers;
 using FUNewsManagementMVC.Models;
-using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace FUNewsManagementMVC.Controllers
 {
@@ -24,7 +16,7 @@ namespace FUNewsManagementMVC.Controllers
         private readonly ITagService _contextTag;
         private readonly IMapper _mapper;
         private readonly INewsTagService _contextNewsTag;
-        public NewsArticlesController(INewsArticleService contextNewsArticle, ISystemAccountService contextSystemAccount, 
+        public NewsArticlesController(INewsArticleService contextNewsArticle, ISystemAccountService contextSystemAccount,
             ICategoryService contextCategory, ITagService contextTag, IMapper mapper, INewsTagService contextNewsTag)
         {
             _contextCategory = contextCategory;
@@ -40,9 +32,9 @@ namespace FUNewsManagementMVC.Controllers
         public async Task<IActionResult> Index(string filterSelect)
         {
             ViewBag.CurrentFilter = filterSelect;
-            var userId = (short) HttpContext.Session.GetInt32("UserId");
+            var userId = (short)HttpContext.Session.GetInt32(AppCts.Session.UserId);
             IEnumerable<NewsArticle> newsArticles;
-            switch(filterSelect)
+            switch (filterSelect)
             {
                 case "all":
                     newsArticles = await _contextNewsArticle.GetNewsArticles();
@@ -96,9 +88,9 @@ namespace FUNewsManagementMVC.Controllers
                 try
                 {
                     var newsArticle = _mapper.Map<NewsArticle>(newsArticleVM);
-                    newsArticle.CreatedById = (short?)HttpContext.Session.GetInt32("UserId");
-                    newsArticle.UpdatedById = (short?)HttpContext.Session.GetInt32("UserId");
-                    
+                    newsArticle.CreatedById = (short?)HttpContext.Session.GetInt32(AppCts.Session.UserId);
+                    newsArticle.UpdatedById = (short?)HttpContext.Session.GetInt32(AppCts.Session.UserId);
+
 
                     await _contextNewsArticle.AddNewsArticle(newsArticle);
 
@@ -114,7 +106,7 @@ namespace FUNewsManagementMVC.Controllers
                 {
                     TempData["error"] = ex.Message;
                 }
-                
+
             }
             ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategories(), "CategoryId", "CategoryName", newsArticleVM.CategoryId);
             ViewData["TagId"] = new MultiSelectList(await _contextTag.GetAllTags(), "TagId", "TagName", newsArticleVM.TagIds);
@@ -168,13 +160,13 @@ namespace FUNewsManagementMVC.Controllers
                 {
                     TempData["error"] = ex.Message;
                 }
-                
+
             }
             ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategories(), "CategoryId", "CategoryName", newsArticleVM.CategoryId);
             return View(newsArticleVM);
         }
 
-        // GET: NewsArticles/Delete/5
+        // GET: NewsArticles/DeleteAsync/5
         [AuthorizationAttribute("1")]
         public async Task<IActionResult> Delete(string id)
         {

@@ -1,30 +1,39 @@
-﻿using BusinessObjects;
-using Repositories;
-using Repositories.IRepositories;
-using Services.IService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Repositories.IRepositories;
+using FUNewsManagement.Services.IServices;
 
-namespace Services
+namespace FUNewsManagement.Services
 {
     public class TagService : ITagService
     {
+        // =================================
+        // === Fields & Props
+        // =================================
+
         private readonly ITagRepository _repo;
-        public TagService()
+
+        // =================================
+        // === Constructors
+        // =================================
+
+        public TagService(ITagRepository repo)
         {
-            _repo = new TagRepository(); 
+            _repo = repo;
         }
-        public async Task<IEnumerable<Tag>> GetAllTags()
+
+        // =================================
+        // === Methods
+        // =================================
+
+        public async Task<List<Tag>> GetAllTags(string? searchName = null)
         {
-            return await _repo.GetAllTags();
+            return (List<Tag>)await _repo
+                .GetAllAsync(t => string.IsNullOrEmpty(searchName) || t.TagName!.Contains(searchName));
         }
 
         public async Task<Tag?> GetTagById(int id)
         {
-            return await _repo.GetTagById(id);
+            return await _repo.GetAsync(t => t.TagId == id);
         }
     }
 }

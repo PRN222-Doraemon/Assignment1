@@ -1,36 +1,42 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Services.IServices;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BusinessObjects;
-using DataAccessLayer;
-using Services;
-using System.Runtime.InteropServices;
-using Services.IService;
 
 namespace FUNewsManagementMVC.Controllers
 {
     public class CategoriesController : Controller
     {
+        // =================================
+        // === Fields & Props
+        // =================================
+
         private readonly ICategoryService _categoryService;
+
+        // =================================
+        // === Constructors
+        // =================================
 
         public CategoriesController(ICategoryService categoryService)
         {
             _categoryService = categoryService;
         }
 
+        // =================================
+        // === Actions
+        // =================================
+
         // GET: Categories
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index([FromQuery] string? searchName)
         {
-            var categories = await _categoryService.GetCategories();
+            var categories = await _categoryService.GetCategories(searchName);
             return View(categories);
         }
 
         // GET: Categories/Details/5
-        public async Task<IActionResult> Details(short id)
+        [HttpGet]
+        public async Task<IActionResult> Details([FromRoute] short id)
         {
             var category = await _categoryService.GetCategoryById(id);
             if (category == null)
@@ -41,9 +47,12 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: Categories/Create
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
-            ViewData["ParentCategoryId"] = new SelectList(await _categoryService.GetCategories(), "CategoryId", "CategoryName");
+            ViewData["ParentCategoryId"] = new SelectList(await _categoryService.GetCategories(),
+                                                            "CategoryId",
+                                                            "CategoryName");
             return View();
         }
 
@@ -52,7 +61,7 @@ namespace FUNewsManagementMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(Category category)
+        public async Task<IActionResult> Create([FromForm] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -66,14 +75,16 @@ namespace FUNewsManagementMVC.Controllers
                 {
                     TempData["error"] = ex.Message;
                 }
-                
+
             }
+
             ViewData["ParentCategoryId"] = new SelectList(await _categoryService.GetCategories(), "CategoryId", "CategoryName", category.ParentCategoryId);
             return View(category);
         }
 
         // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(short id)
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromRoute] short id)
         {
             var category = await _categoryService.GetCategoryById(id);
             if (category == null)
@@ -89,7 +100,7 @@ namespace FUNewsManagementMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(Category category)
+        public async Task<IActionResult> Edit([FromForm] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -102,14 +113,15 @@ namespace FUNewsManagementMVC.Controllers
                 catch (Exception ex)
                 {
                     TempData["error"] = ex.Message;
-                }              
+                }
             }
             ViewData["ParentCategoryId"] = new SelectList(await _categoryService.GetCategories(), "CategoryId", "CategoryName", category.ParentCategoryId);
             return View(category);
         }
 
         // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(short id)
+        [HttpGet]
+        public async Task<IActionResult> Delete([FromRoute] short id)
         {
             try
             {
@@ -120,7 +132,7 @@ namespace FUNewsManagementMVC.Controllers
             {
                 TempData["error"] = ex.Message;
             }
-            
+
             return RedirectToAction(nameof(Index));
         }
     }

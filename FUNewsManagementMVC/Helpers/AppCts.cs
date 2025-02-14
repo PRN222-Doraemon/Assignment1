@@ -1,7 +1,9 @@
 ﻿namespace FUNewsManagementMVC.Helpers;
 
-public static class AppCts {
-    public static class Session {
+public static class AppCts
+{
+    public static class Session
+    {
         public const string UserId = "UserId";
 
         public const string UserEmail = "UserEmail";
@@ -11,7 +13,8 @@ public static class AppCts {
         public const string UserName = "UserName";
     }
 
-    public static class Roles {
+    public static class Roles
+    {
         public const string Staff = "1";
         public const string Lecturer = "2";
     }

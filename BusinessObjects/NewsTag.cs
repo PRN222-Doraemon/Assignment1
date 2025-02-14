@@ -1,4 +1,4 @@
-﻿namespace BusinessObjects
+﻿namespace FUNewsManagement.BusinessObjects
 {
     public class NewsTag
     {

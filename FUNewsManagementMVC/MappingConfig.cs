@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BusinessObjects;
 using FUNewsManagementMVC.Models;
 
 namespace FUNewsManagementMVC

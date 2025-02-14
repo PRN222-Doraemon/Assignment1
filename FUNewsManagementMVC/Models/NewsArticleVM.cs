@@ -1,7 +1,4 @@
-﻿using BusinessObjects;
-using System.ComponentModel.DataAnnotations;
-
-namespace FUNewsManagementMVC.Models
+﻿namespace FUNewsManagementMVC.Models
 {
     public class NewsArticleVM
     {

@@ -1,6 +1,4 @@
-﻿using BusinessObjects;
-
-namespace Services.IService
+﻿namespace FUNewsManagement.Services.IServices
 {
     public interface INewsTagService
     {

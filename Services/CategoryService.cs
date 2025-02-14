@@ -1,59 +1,69 @@
-﻿using BusinessObjects;
-using Repositories;
-using Repositories.IRepositories;
-using Services.IService;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Repositories.IRepositories;
+using FUNewsManagement.Services.IServices;
 
-namespace Services
+namespace FUNewsManagement.Services
 {
     public class CategoryService : ICategoryService
     {
+        // =================================
+        // === Fields & Props
+        // =================================
+
         private readonly ICategoryRepository _categoryRepo;
         private readonly INewsArticleRepository _newsRepo;
-        public CategoryService()
+
+        // =================================
+        // === Constructors
+        // =================================
+
+        public CategoryService(ICategoryRepository categoryRepo, INewsArticleRepository newsRepo)
         {
-            _categoryRepo = new CategoryRepository();
-            _newsRepo = new NewsArticleRepository();
+            _categoryRepo = categoryRepo;
+            _newsRepo = newsRepo;
         }
 
-        public async Task AddCategory(Category category)
+        // =================================
+        // === Methods
+        // =================================
+
+        public async Task<bool> AddCategory(Category category)
         {
-            category.IsActive = true;   
-            await _categoryRepo.AddCategory(category);
+            category.IsActive = true;
+            return await _categoryRepo.AddAsync(category) != null;
         }
 
-        public async Task DeleteCategory(short id)
+        public async Task<bool> DeleteCategory(short id)
         {
-            var obj = await _categoryRepo.GetCategoryById(id);
-            if (obj == null)
-            {
-                throw new Exception($"Category with {id} not found!");
-            }
-            if ((await _newsRepo.GetNewsArticleByCategoryId(id)).Count > 0)
+            var category = await _categoryRepo.GetAsync(c => c.CategoryId == id)
+                ?? throw new Exception($"Category with {id} not found!");
+
+            if (await _newsRepo.GetAsync(n => n.CategoryId == id) != null)
             {
                 throw new Exception($"Cannot delete: The item is linked to one or more news articles");
             }
-            obj.IsActive = false;
-            await _categoryRepo.UpdateCategory(obj);
+
+            category.IsActive = false;
+            return await _categoryRepo.UpdateAsync(category) != null;
         }
 
-        public async Task<IEnumerable<Category>> GetCategories()
+        public async Task<List<Category>> GetCategories(string? searchName = null)
         {
-            return await _categoryRepo.GetCategories();
+            return (List<Category>)await _categoryRepo.GetAllAsync(c => string.IsNullOrEmpty(searchName) || c.CategoryName.Contains(searchName));
         }
 
         public async Task<Category> GetCategoryById(short id)
         {
-            return await _categoryRepo.GetCategoryById(id);
+            return await _categoryRepo.GetAsync(c => c.CategoryId == id)
+                ?? throw new Exception($"Category with {id} not found!");
         }
 
-        public async Task UpdateCategory(Category category)
+        public async Task<bool> UpdateCategory(Category category)
         {
-            var obj = await _categoryRepo.GetCategoryById(category.CategoryId);
-            if (obj == null)
-            {
-                throw new Exception($"Category with {category.CategoryId} not found!");
-            }
-            await _categoryRepo.UpdateCategory(category);
+            var existingCategory = await _categoryRepo.GetAsync(c => c.CategoryId == category.CategoryId)
+                ?? throw new Exception($"Category with {category.CategoryId} not found!");
+
+            return await _categoryRepo.UpdateAsync(existingCategory) != null;
         }
     }
 }

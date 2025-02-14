@@ -1,46 +1,59 @@
-﻿using BusinessObjects;
-using Repositories;
-using Repositories.IRepositories;
-using Services.IService;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Repositories.IRepositories;
+using FUNewsManagement.Services.IServices;
 
-namespace Services
+namespace FUNewsManagement.Services
 {
     public class SystemAccountService : ISystemAccountService
     {
+        // =================================
+        // === Fields & Props
+        // =================================
+
         private readonly ISystemAccountRepository _repo;
-        public SystemAccountService()
+
+        // =================================
+        // === Constructors
+        // =================================
+
+        public SystemAccountService(ISystemAccountRepository repo)
         {
-            _repo = new SystemAccountRepository();
+            _repo = repo;
         }
 
-        public bool AddSystemAccount(SystemAccount account)
+        // =================================
+        // === Methods
+        // =================================
+
+        public async Task<SystemAccount?> CheckLogin(string email, string password)
         {
-            return _repo.AddSystemAccount(account);
+            return await _repo.CheckLoginAsync(email, password);
         }
 
-        public SystemAccount CheckLogin(string email, string password)
+        public async Task<bool> AddSystemAccount(SystemAccount account)
         {
-            return _repo.CheckLogin(email, password);
+            return await _repo.AddAsync(account) != null;
         }
 
-        public bool DeleteSystemAccount(SystemAccount account)
+        public async Task<bool> DeleteSystemAccount(SystemAccount account)
         {
-            return _repo.DeleteSystemAccount(account);
+            return await _repo.DeleteAsync(account) != null;
         }
 
-        public SystemAccount GetAccountById(short accountId)
+        public async Task<SystemAccount?> GetAccountById(short accountId)
         {
-            return _repo.GetAccountById(accountId); 
+            return await _repo.GetAsync(a => a.AccountId == accountId);
         }
 
-        public IEnumerable<SystemAccount> GetAllAccounts()
+        public async Task<List<SystemAccount>> GetAllAccounts(string? searchName = null)
         {
-            return _repo.GetAllAccounts();
+            return (List<SystemAccount>)await _repo
+                .GetAllAsync(s => string.IsNullOrEmpty(searchName) || s.AccountName!.Contains(searchName));
         }
 
-        public bool UpdateSystemAccount(SystemAccount account)
+        public async Task<bool> UpdateSystemAccount(SystemAccount account)
         {
-            return _repo.UpdateSystemAccount(account);
+            return await _repo.UpdateAsync(account) != null;
         }
     }
 }

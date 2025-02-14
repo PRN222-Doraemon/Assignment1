@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using BusinessObjects;
-using Services.IService;
-using FUNewsManagementMVC.Models;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC.Helpers;
+using FUNewsManagementMVC.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace FUNewsManagementMVC.Controllers {
-    public class SystemAccountsController : Controller {
+namespace FUNewsManagementMVC.Controllers
+{
+    public class SystemAccountsController : Controller
+    {
         // ===========================
         // === Props & Fields
         // ===========================
@@ -29,7 +29,7 @@ namespace FUNewsManagementMVC.Controllers {
         // GET: SystemAccounts
         public async Task<IActionResult> Index()
         {
-            var accounts = _systemAccountService.GetAllAccounts();
+            var accounts = await _systemAccountService.GetAllAccounts();
             return View(accounts);
         }
 
@@ -39,41 +39,48 @@ namespace FUNewsManagementMVC.Controllers {
             return View();
         }
 
+        // GET: SystemAccounts/AccessDenied
         public IActionResult AccessDenied()
         {
             return View();
         }
 
-        // POST: SystemAccounts/Create
+        // POST: SystemAccounts/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginVM loginVM)
+        public async Task<IActionResult> Login([FromForm] LoginVM loginVM)
         {
-            if (ModelState.IsValid){
+            if (ModelState.IsValid)
+            {
                 var account = _systemAccountService.CheckLogin(loginVM.AccountEmail, loginVM.AccountPassword);
-                if (account != null){
-                    HttpContext.Session.SetString("Username", account.AccountName);
-                    HttpContext.Session.SetInt32("UserRole", (int)account.AccountRole);
-                    HttpContext.Session.SetInt32("UserId", account.AccountId);
+                if (account != null)
+                {
+                    HttpContext.Session.SetString(AppCts.Session.UserName, account.AccountName);
+                    HttpContext.Session.SetInt32(AppCts.Session.UserRole, (int)account.AccountRole);
+                    HttpContext.Session.SetInt32(AppCts.Session.UserId, account.AccountId);
                     return RedirectToAction("Index", "NewsArticles");
                 }
-                else{
+                else
+                {
                     TempData["error"] = "Invalid username or password";
                 }
             }
-            return View();
+            return View(loginVM);
         }
 
+        // GET: SystemAccounts/Login
         public IActionResult Logout()
         {
+            HttpContext.Session.Clear();
             return RedirectToAction(nameof(Login));
         }
 
         // GET: SystemAccounts/Edit/5
-        public async Task<IActionResult> Edit(short id)
+        public async Task<IActionResult> Edit([FromRoute] short id)
         {
             var systemAccount = _systemAccountService.GetAccountById(id);
-            if (systemAccount == null){
+            if (systemAccount == null)
+            {
                 return NotFound();
             }
             //ViewData["AccountRoles"] = new SelectList(new List());
@@ -85,42 +92,50 @@ namespace FUNewsManagementMVC.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SystemAccount systemAccount)
         {
-            if (ModelState.IsValid){
-                if (_systemAccountService.UpdateSystemAccount(systemAccount)){
+            if (ModelState.IsValid)
+            {
+                if (_systemAccountService.UpdateSystemAccount(systemAccount))
+                {
                     TempData["success"] = "Successfully updated!";
                 }
-                else{
+                else
+                {
                     TempData["error"] = "Fail to update!";
                 }
             }
             return View(systemAccount);
         }
 
-        // GET: SystemAccounts/Delete/5
-        public async Task<IActionResult> Delete(short id)
+        // GET: SystemAccounts/DeleteAsync/5
+        public async Task<IActionResult> Delete([FromRoute] short id)
         {
             var systemAccount = _systemAccountService.GetAccountById(id);
-            if (systemAccount == null){
+            if (systemAccount == null)
+            {
                 return NotFound();
             }
 
-            if (_systemAccountService.DeleteSystemAccount(systemAccount)){
+            if (_systemAccountService.DeleteSystemAccount(systemAccount))
+            {
                 TempData["success"] = "Successfully deleted!";
             }
-            else{
+            else
+            {
                 TempData["error"] = "Fail to delete!";
             }
             ;
             return RedirectToAction(nameof(Index));
         }
 
+        // GET: SystemAccounts/Profile
         [AuthorizationAttribute]
         public async Task<IActionResult> Profile()
         {
-            var userId = (short)HttpContext.Session.GetInt32("UserId");
+            var userId = (short)HttpContext.Session.GetInt32(AppCts.Session.UserId);
 
             var user = _systemAccountService.GetAccountById(userId);
-            if (user == null){
+            if (user == null)
+            {
                 return NotFound();
             }
             return View(user);

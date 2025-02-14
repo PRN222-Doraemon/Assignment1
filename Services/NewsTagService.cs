@@ -1,17 +1,30 @@
-﻿using BusinessObjects;
-using Repositories;
-using Repositories.IRepositories;
-using Services.IService;
+﻿using FUNewsManagement.BusinessObjects;
+using FUNewsManagement.Repositories.IRepositories;
+using FUNewsManagement.Services.IServices;
 
-namespace Services
+namespace FUNewsManagement.Services
 {
     public class NewsTagService : INewsTagService
     {
+        // =================================
+        // === Fields & Props
+        // =================================
+
         private readonly INewsTagRepository _repo;
-        public NewsTagService()
+
+        // =================================
+        // === Constructors
+        // =================================
+
+        public NewsTagService(INewsTagRepository repo)
         {
-            _repo = new NewsTagRepository();
+            _repo = repo;
         }
+
+        // =================================
+        // === Methods
+        // =================================
+
         public async Task AddNewsTag(ICollection<int> newsTagIds, string newsArticleId)
         {
             foreach (int tagId in newsTagIds)
@@ -21,8 +34,8 @@ namespace Services
                     NewsArticleID = newsArticleId,
                     TagID = tagId
                 };
-                await _repo.AddNewsTag(tag);
-            }           
+                await _repo.AddAsync(tag);
+            }
         }
     }
 }

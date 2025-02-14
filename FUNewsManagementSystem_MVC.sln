@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessObjects", "BusinessObjects\BusinessObjects.csproj", "{826D60C9-04A1-47A8-88A0-D2042F09F15C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.BusinessObjects", "BusinessObjects\FUNewsManagement.BusinessObjects.csproj", "{826D60C9-04A1-47A8-88A0-D2042F09F15C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccessLayer", "DataAccessLayer\DataAccessLayer.csproj", "{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Repositories", "DataAccessLayer\FUNewsManagement.Repositories.csproj", "{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repositories", "Repositories\Repositories.csproj", "{15F287C3-BAB0-4AC3-ACFD-AF2A98206D8D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{09B09276-96F1-45DD-95B0-2364039BFA07}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagement.Services", "Services\FUNewsManagement.Services.csproj", "{09B09276-96F1-45DD-95B0-2364039BFA07}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FUNewsManagementMVC", "FUNewsManagementMVC\FUNewsManagementMVC.csproj", "{53386D7B-DB94-48B6-A83E-F1141FDB3D04}"
 EndProject
@@ -27,10 +25,6 @@ Global
 		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F8990BCD-E2DF-43E7-9480-1E8061A6DC49}.Release|Any CPU.Build.0 = Release|Any CPU
-		{15F287C3-BAB0-4AC3-ACFD-AF2A98206D8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{15F287C3-BAB0-4AC3-ACFD-AF2A98206D8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{15F287C3-BAB0-4AC3-ACFD-AF2A98206D8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{15F287C3-BAB0-4AC3-ACFD-AF2A98206D8D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09B09276-96F1-45DD-95B0-2364039BFA07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{09B09276-96F1-45DD-95B0-2364039BFA07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09B09276-96F1-45DD-95B0-2364039BFA07}.Release|Any CPU.ActiveCfg = Release|Any CPU

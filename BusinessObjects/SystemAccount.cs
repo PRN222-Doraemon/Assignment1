@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
-namespace BusinessObjects;
+namespace FUNewsManagement.BusinessObjects;
 
 public partial class SystemAccount
-{   
+{
     public short AccountId { get; set; }
     [Display(Name = "Name")]
     public string? AccountName { get; set; }

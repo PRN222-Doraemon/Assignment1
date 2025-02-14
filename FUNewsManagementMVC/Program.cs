@@ -1,31 +1,21 @@
 using AutoMapper;
-using DataAccessLayer;
+using FUNewsManagement.Repositories.Extensions;
+using FUNewsManagement.services.Extensions;
+using FUNewsManagement.Services;
+using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC;
-using Microsoft.EntityFrameworkCore;
-using Services;
-using Services.IService;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// AddAsync all services.
 builder.Services.AddControllersWithViews();
+builder.Services.AddRepositoriesLayer(builder.Configuration);
+builder.Services.AddServicesLayer();
 
-// Add db context
-builder.Services.AddDbContext<FunewsManagementContext>(opt =>
-{
-    opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnectionString"));
-});
-
-// Add automapper
+// AddAsync automapper
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<INewsArticleService, NewsArticleService>();
-builder.Services.AddScoped<ISystemAccountService, SystemAccountService>();
-builder.Services.AddScoped<ITagService, TagService>();
-builder.Services.AddScoped<INewsTagService, NewsTagService>();
 
 builder.Services.AddSession(options =>
 {
@@ -53,7 +43,7 @@ app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=SystemAccounts}/{action=Login}/{id?}");
+name: "default",
+pattern: "{controller=SystemAccounts}/{action=Login}/{id?}");
 
 app.Run();
