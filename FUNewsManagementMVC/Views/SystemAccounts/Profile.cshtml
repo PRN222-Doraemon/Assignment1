@@ -5,25 +5,36 @@
 }
 
 <div class="container mt-4">
-	<h2 class="text-center">Profile</h2>
+	<div class="card mx-auto shadow-lg rounded" style="max-width: 500px;">
+		<div class="card-header bg-primary text-white text-center">
+			<h3 class="mb-0"><i class="fas fa-user-circle"></i> Profile</h3>
+		</div>
+		<div class="card-body text-center">
+			<h4 class="card-title fw-bold">@Model.AccountName</h4>
+			<p class="text-muted">ID: @Model.AccountId</p>
 
-	<div class="card mx-auto mt-3" style="max-width: 500px;">
-		<div class="card-body">
-			<h4 class="card-title text-center">@Model.AccountName</h4>
-			<p class="text-center text-muted">ID: @Model.AccountId</p>
-
-			<ul class="list-group list-group-flush">
-				<li class="list-group-item"><strong>Email:</strong> @Model.AccountEmail</li>
+			<ul class="list-group list-group-flush text-start">
 				<li class="list-group-item">
-					<strong>Role:</strong> @(Model.AccountRole == int.Parse(AppCts.Roles.Staff)
-					? "Staff" : (Model.AccountRole != int.Parse(AppCts.Roles.Admin)
-					? "Lecturer"
-					: "Admin"))
+					<strong><i class="fas fa-envelope"></i> Email:</strong> @Model.AccountEmail
+				</li>
+				<li class="list-group-item">
+					<strong><i class="fas fa-user-tag"></i> Role:</strong>
+					@{
+						string roleText = Model.AccountRole switch
+						{
+							var r when r == int.Parse(AppCts.Roles.Admin) => "Admin",
+							var r when r == int.Parse(AppCts.Roles.Staff) => "Staff",
+							_ => "Lecturer"
+						};
+					}
+					@roleText
 				</li>
 			</ul>
 
-			<div class="text-center mt-3">
-				<a asp-action="Edit" asp-controller="SystemAccounts" class="btn btn-primary">Edit Profile</a>
+			<div class="text-center mt-4">
+				<a asp-action="Edit" asp-controller="SystemAccounts" class="btn btn-primary">
+					<i class="fas fa-edit"></i> Edit Profile
+				</a>
 			</div>
 		</div>
 	</div>

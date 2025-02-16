@@ -2,37 +2,47 @@
 
 @{
 	ViewData["Title"] = "News Articles";
-	var userId = ViewContext.HttpContext.Session.GetInt32("UserId");
-	var userRole = ViewContext.HttpContext.Session.GetInt32("UserRole");
+	var userId = ViewContext.HttpContext.Session.GetInt32("UserId") ?? 0;
+	var userRole = ViewContext.HttpContext.Session.GetInt32("UserRole") ?? 0;
 }
 
-@* HTML *@
-
-<div class="container mt-4">
+<div class="container mt-5">
 	<h1 class="text-center mb-4">@ViewData["Title"]</h1>
-	<div class="d-flex justify-content-between align-items-center mb-3">
 
-		@if (userId != null && userRole == int.Parse(AppCts.Roles.Staff))
+	<div class="d-flex justify-content-between align-items-center flex-wrap mb-4">
+		@if (userId > 0 && userRole == int.Parse(AppCts.Roles.Staff))
 		{
 			<form asp-action="Index" method="get" asp-controller="NewsArticles" class="d-flex align-items-center">
-				<div>
-					<label for="filterSelect" class="me-2">Filter:</label>
-					<select id="filterSelect" name="filterSelect" class="form-select w-auto d-inline-block" onchange="this.form.submit()">
-						<option value="all" selected="@(ViewBag.CurrentFilter == "all" ? "selected" : null)">All Articles</option>
-						<option value="mine" selected="@(ViewBag.CurrentFilter == "mine" ? "selected" : null)">My Articles</option>
-					</select>
-				</div>
+				<label for="filterSelect" class="me-2 fw-bold">Filter:</label>
+				<select id="filterSelect" name="filterSelect" class="form-select w-auto d-inline-block" onchange="this.form.submit()">
+					<option value="all" selected="@(ViewBag.CurrentFilter == "all" ? "selected" : null)">All Articles</option>
+					<option value="mine" selected="@(ViewBag.CurrentFilter == "mine" ? "selected" : null)">My Articles</option>
+				</select>
 			</form>
 
-			<a asp-action="Create" class="btn btn-primary">Create New</a>
+			<a asp-action="Create" class="btn btn-primary">
+				<i class="fas fa-plus"></i> Create New
+			</a>
 		}
 	</div>
 
-	@* Export Statistic Button  *@
+	@* Search Bar with Better Styling *@
+	<form asp-action="Index" asp-controller="NewsArticles" method="GET" class="row g-2 mb-4">
+		<div class="col-md-10">
+			<input type="search" name="searchTitle" class="form-control" placeholder="Search By Title..." />
+		</div>
+		<div class="col-md-2 text-end">
+			<button type="submit" class="btn btn-primary w-100">
+				<i class="fas fa-search"></i> Search
+			</button>
+		</div>
+	</form>
+
+	@* Export Statistic Button (Admin Only) *@
 	@if (userRole == int.Parse(AppCts.Roles.Admin))
 	{
 		<form asp-action="ExportStatistic" asp-controller="NewsArticles" method="get">
-			<div class="row mb-3">
+			<div class="row g-3 mb-4">
 				<div class="col-md-4">
 					<label for="startDate" class="form-label">Start Date</label>
 					<input type="date" class="form-control" id="startDate" name="startDate" required>
@@ -42,7 +52,7 @@
 					<input type="date" class="form-control" id="endDate" name="endDate" required>
 				</div>
 				<div class="col-md-4 align-self-end">
-					<button type="submit" class="btn btn-primary">
+					<button type="submit" class="btn btn-success w-100">
 						<i class="fas fa-file-download"></i> Export Statistic
 					</button>
 				</div>
@@ -50,11 +60,11 @@
 		</form>
 	}
 
-	@* Table of Contents *@
+	@* News Articles Table *@
 	<div class="table-responsive">
-		<table class="table table-bordered table-striped table-hover align-middle table-lg">
-			<thead class="table-primary">
-				<tr>
+		<table class="table table-bordered table-hover align-middle shadow-sm">
+			<thead class="table-dark text-white">
+				<tr class="text-center">
 					<th>@Html.DisplayNameFor(model => model.NewsTitle)</th>
 					<th>@Html.DisplayNameFor(model => model.Headline)</th>
 					<th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
@@ -71,19 +81,19 @@
 				@foreach (var item in Model)
 				{
 					<tr>
-						<td>@item.NewsTitle</td>
+						<td class="fw-bold">@item.NewsTitle</td>
 						<td>@item.Headline</td>
-						<td>@item.CreatedDate?.ToString("yyyy-MM-dd")</td>
-						<td>@item.ModifiedDate?.ToString("yyyy-MM-dd")</td>
+						<td>@(item.CreatedDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
+						<td>@(item.ModifiedDate?.ToString("yyyy-MM-dd") ?? "N/A")</td>
 						<td>@item.NewsSource</td>
 						<td>
-							<span class="badge @((bool)item.NewsStatus ? "bg-success" : "bg-secondary")">
-								@((bool)item.NewsStatus ? "Active" : "Inactive")
+							<span class="badge @(item.NewsStatus ? "bg-success" : "bg-danger")">
+								@(item.NewsStatus ? "Active" : "Inactive")
 							</span>
 						</td>
 						<td>@item.Category?.CategoryName</td>
 						<td>
-							@if (item.NewsTags != null && item.NewsTags.Any())
+							@if (item.NewsTags?.Count > 0)
 							{
 								<div class="d-flex flex-wrap gap-1">
 									@foreach (var tag in item.NewsTags)
@@ -94,13 +104,13 @@
 							}
 						</td>
 						<td>@item.CreatedBy?.AccountName</td>
-						<td>
+						<td class="text-center">
 							<a asp-action="Details" asp-route-id="@item.NewsArticleId" class="btn btn-sm btn-warning">
 								<i class="fas fa-eye"></i>
 							</a>
-							@if (userId != null && userRole == int.Parse(AppCts.Roles.Staff))
+							@if (userId > 0 && userRole == int.Parse(AppCts.Roles.Staff))
 							{
-								<a asp-action="Edit" asp-route-id="@item.NewsArticleId" class="btn btn-sm btn-info text-white">
+								<a asp-action="Edit" asp-route-id="@item.NewsArticleId" class="btn btn-sm btn-info">
 									<i class="fas fa-edit"></i>
 								</a>
 								<a asp-action="Delete" asp-route-id="@item.NewsArticleId" class="btn btn-sm btn-danger" onclick="return confirmDelete()">
@@ -115,8 +125,7 @@
 	</div>
 </div>
 
-@* Scripts *@
-
+@* JavaScript Confirm Delete *@
 <script>
 	function confirmDelete() {
 		return confirm("Are you sure you want to delete this item?");

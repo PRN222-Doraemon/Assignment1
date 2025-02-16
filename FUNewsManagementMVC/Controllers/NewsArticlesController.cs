@@ -41,34 +41,23 @@ namespace FUNewsManagementMVC.Controllers
         // === Methods
         // ===========================
 
-        // GET: NewsArticles?filterSelect=mine?searchName=vukimduy
+        // GET: NewsArticles?filterSelect=mine?searchTitle=vukimduy?filterSelect
         [HttpGet]
         public async Task<IActionResult> Index(
             [FromQuery] string filterSelect,
-            [FromQuery] string searchName)
+            [FromQuery] string searchTitle)
         {
             ViewBag.CurrentFilter = filterSelect;
             IEnumerable<NewsArticle> newsArticles;
             var userId = HttpContext?.Session?.GetInt32(AppCts.Session.UserId);
 
-            if (userId != null)
+            if (userId != null && "mine".Equals(filterSelect))
             {
-                switch (filterSelect)
-                {
-                    case "all":
-                        newsArticles = await _contextNewsArticle.GetNewsArticles(searchName);
-                        break;
-                    case "mine":
-                        newsArticles = await _contextNewsArticle.GetNewsArticlesByCreatedUserId((short)userId);
-                        break;
-                    default:
-                        newsArticles = await _contextNewsArticle.GetNewsArticles(searchName);
-                        break;
-                }
+                newsArticles = await _contextNewsArticle.GetNewsArticlesByCreatedUserId((short)userId);
             }
             else
             {
-                newsArticles = await _contextNewsArticle.GetNewsArticles();
+                newsArticles = await _contextNewsArticle.GetNewsArticles(searchTitle);
             }
 
             return View(newsArticles);
