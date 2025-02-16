@@ -40,7 +40,7 @@ namespace FUNewsManagement.Services
 
             if (await _newsRepo.GetAsync(n => n.CategoryId == id) != null)
             {
-                throw new Exception($"Cannot delete: The item is linked to one or more news articles");
+                throw new Exception($"Cannot delete: The category is linked to one or more news articles");
             }
 
             category.IsActive = false;
@@ -62,6 +62,11 @@ namespace FUNewsManagement.Services
         {
             var existingCategory = await _categoryRepo.GetAsync(c => c.CategoryId == category.CategoryId)
                 ?? throw new Exception($"Category with {category.CategoryId} not found!");
+
+            existingCategory.CategoryName = category.CategoryName;
+            existingCategory.CategoryDesciption = category.CategoryDesciption;
+            existingCategory.ParentCategoryId = category.ParentCategoryId;
+            existingCategory.IsActive = category.IsActive;
 
             return await _categoryRepo.UpdateAsync(existingCategory) != null;
         }

@@ -49,11 +49,10 @@ namespace FUNewsManagement.Repositories
 
         public async Task<Category?> UpdateAsync(Category category)
         {
-            var updatedEntity = _context.Categories.Update(category).Entity;
+            var updatedCategory = _context.Categories.Update(category).Entity;
+            _context.Entry(category).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-            return updatedEntity;
+            return updatedCategory;
         }
-
-
     }
 }

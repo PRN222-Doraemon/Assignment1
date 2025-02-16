@@ -35,12 +35,15 @@
 
 			<div class="mb-3">
 				<label asp-for="@Model.IsActive" class="form-label fw-bold"></label>
-				<input asp-for="@Model.IsActive" hidden />
 				<div readonly>
 					<span class="badge @((bool)Model.IsActive ? "bg-success" : "bg-danger")">
 						@((bool)Model.IsActive ? "Active" : "Inactive")
 					</span>
 				</div>
+				<select asp-for="@Model.IsActive" class="form-select">
+					<option value="true">Active</option>
+					<option value="false">Inactive</option>
+				</select>
 			</div>
 
 			<div class="text-end">

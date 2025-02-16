@@ -9,6 +9,5 @@ namespace FUNewsManagement.Services.IServices
         Task<bool> DeleteCategory(short id);
         Task<List<Category>> GetCategories(string? searchName = null);
         Task<Category> GetCategoryById(short id);
-
     }
 }
