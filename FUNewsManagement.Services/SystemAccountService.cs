@@ -2,7 +2,6 @@
 using FUNewsManagement.Repositories.IRepositories;
 using FUNewsManagement.Services.IServices;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Identity.Client;
 
 namespace FUNewsManagement.Services
 {

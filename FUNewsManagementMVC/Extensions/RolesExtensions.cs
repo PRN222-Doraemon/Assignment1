@@ -1,6 +1,5 @@
 ﻿using FUNewsManagement.BusinessObjects;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using static FUNewsManagement.BusinessObjects.AppCts;
 
 namespace FUNewsManagementMVC.Extensions
 {

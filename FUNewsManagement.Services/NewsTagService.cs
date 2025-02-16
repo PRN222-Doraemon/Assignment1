@@ -10,15 +10,17 @@ namespace FUNewsManagement.Services
         // === Fields & Props
         // =================================
 
-        private readonly INewsTagRepository _repo;
+        private readonly INewsTagRepository _newsTagRepo;
+        private readonly INewsArticleRepository _articleRepo;
 
         // =================================
         // === Constructors
         // =================================
 
-        public NewsTagService(INewsTagRepository repo)
+        public NewsTagService(INewsTagRepository newsTagRepo, INewsArticleRepository articleRepo)
         {
-            _repo = repo;
+            _newsTagRepo = newsTagRepo;
+            _articleRepo = articleRepo;
         }
 
         // =================================
@@ -34,7 +36,44 @@ namespace FUNewsManagement.Services
                     NewsArticleID = newsArticleId,
                     TagID = tagId
                 };
-                await _repo.AddAsync(tag);
+                await _newsTagRepo.AddAsync(tag);
+            }
+        }
+
+        // Existing: A B C D E
+        // Select: B C D G H
+        // Remove: A E
+        // Add New: G H
+        // After Add New: B C D G H
+        public async Task UpdateNewsTags(ICollection<int> newsTagIdsToAdd, string newsArticleId)
+        {
+            // Get existing tags
+            var existingTagsOfArticle = await _newsTagRepo.GetAllAsync(nt => nt.NewsArticleID == newsArticleId);
+            var existingTagIds = existingTagsOfArticle.Select(nt => nt.TagID).ToHashSet();
+
+            // Remove news tags that are not selected from the View
+            var newsTagsToRemove = existingTagsOfArticle
+                .Where(ex => !newsTagIdsToAdd.Contains(ex.TagID));
+
+            // Add actual new Tag to the news article
+            var newsTagsToAdd = newsTagIdsToAdd
+                .Except(existingTagIds)
+                .Select(id => new NewsTag()
+                {
+                    NewsArticleID = newsArticleId,
+                    TagID = id
+                });
+
+            // Remove old tagsNews
+            if (newsTagsToRemove.Any())
+            {
+                await _newsTagRepo.RemoveTagsFromArticle(newsTagsToRemove);
+            }
+
+            // Add new tags
+            if (newsTagsToAdd.Any())
+            {
+                await _newsTagRepo.AddTagsToArticle(newsTagsToAdd);
             }
         }
     }

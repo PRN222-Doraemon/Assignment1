@@ -1,55 +1,56 @@
 ﻿@model NewsArticle
 
 @{
-    ViewData["Title"] = "Details";
-    var userId = ViewContext.HttpContext.Session.GetInt32("UserId");
-    var userRole = ViewContext.HttpContext.Session.GetInt32("UserRole");
+	ViewData["Title"] = "Details";
+	var userId = ViewContext.HttpContext.Session.GetInt32("UserId");
+	var userRole = ViewContext.HttpContext.Session.GetInt32("UserRole");
 }
 
 <h1 class="text-center my-4">News Article Details</h1>
 <div class="card shadow-lg">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">News Article Information</h4>
-        </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3 fw-bold">Title</dt>
-                <dd class="col-sm-9">@Model.NewsTitle</dd>
+	<div class="card-header bg-primary text-white">
+		<h4 class="mb-0">News Article Information</h4>
+	</div>
+	<div class="card-body">
+		<dl class="row">
+			<dt class="col-sm-3 fw-bold">Title</dt>
+			<dd class="col-sm-9">@Model.NewsTitle</dd>
 
-                <dt class="col-sm-3 fw-bold">Headline</dt>
-                <dd class="col-sm-9">@Model.Headline</dd>
+			<dt class="col-sm-3 fw-bold">Headline</dt>
+			<dd class="col-sm-9">@Model.Headline</dd>
 
-                <dt class="col-sm-3 fw-bold">Created Date</dt>
-                <dd class="col-sm-9">@Model.CreatedDate</dd>
+			<dt class="col-sm-3 fw-bold">Created Date</dt>
+			<dd class="col-sm-9">@Model.CreatedDate</dd>
 
-                <dt class="col-sm-3 fw-bold">Modified Date</dt>
-                <dd class="col-sm-9">@Model.ModifiedDate</dd>
+			<dt class="col-sm-3 fw-bold">Modified Date</dt>
+			<dd class="col-sm-9">@Model.ModifiedDate</dd>
 
-                <dt class="col-sm-3 fw-bold">Content</dt>
-                <dd class="col-sm-9">@Model.NewsContent</dd>
+			<dt class="col-sm-3 fw-bold">Content</dt>
+			<dd class="col-sm-9">@Model.NewsContent</dd>
 
-                <dt class="col-sm-3 fw-bold">Source</dt>
-                <dd class="col-sm-9">@Model.NewsSource</dd>
+			<dt class="col-sm-3 fw-bold">Source</dt>
+			<dd class="col-sm-9">@Model.NewsSource</dd>
 
-                <dt class="col-sm-3 fw-bold">Status</dt>
-                <dd class="col-sm-9">@((Model.NewsStatus ? "Active" : "Inactive"))</dd>
+			<dt class="col-sm-3 fw-bold">Status</dt>
+			<dd class="col-sm-9">@((Model.NewsStatus ? "Active" : "Inactive"))</dd>
 
-                <dt class="col-sm-3 fw-bold">Category</dt>
-                <dd class="col-sm-9">@Model.Category?.CategoryName</dd>
+			<dt class="col-sm-3 fw-bold">Category</dt>
+			<dd class="col-sm-9">@Model.Category?.CategoryName</dd>
 
-                <dt class="col-sm-3 fw-bold">Created By</dt>
-                <dd class="col-sm-9">@Model.CreatedBy?.AccountName</dd>
-            </dl>
-        </div>
+			<dt class="col-sm-3 fw-bold">Created By</dt>
+			<dd class="col-sm-9">@Model.CreatedBy?.AccountName</dd>
+		</dl>
+	</div>
 
-    <div class="card-footer text-end">
-        @if(userId != null && userRole == 1) {
-            <a asp-action="Edit" asp-route-id="@Model?.NewsArticleId" class="btn btn-warning me-2">
-                <i class="fas fa-edit"></i> Edit
-            </a>
-        }       
-        <a asp-action="Index" class="btn btn-secondary">
-            <i class="fas fa-arrow-left"></i> Back to List
-        </a>
-    </div>
+	<div class="card-footer text-end">
+		@if (userId != null && userRole == 1)
+		{
+			<a asp-action="Edit" asp-route-id="@Model?.NewsArticleId" class="btn btn-warning me-2">
+				<i class="fas fa-edit"></i> Edit
+			</a>
+		}
+		<a asp-action="Index" class="btn btn-secondary">
+			<i class="fas fa-arrow-left"></i> Back to List
+		</a>
+	</div>
 </div>

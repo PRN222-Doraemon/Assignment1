@@ -1,10 +1,4 @@
-﻿using FUNewsManagement.Repositories.Data;
-using FUNewsManagement.Repositories.IRepositories;
-using FUNewsManagement.Repositories;
-using Microsoft.EntityFrameworkCore;
-using AutoMapper;
-
-namespace FUNewsManagementMVC.Extensions
+﻿namespace FUNewsManagementMVC.Extensions
 {
     public static partial class ServiceCollectionExtensions
     {

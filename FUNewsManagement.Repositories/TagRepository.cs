@@ -39,6 +39,7 @@ namespace FUNewsManagement.Repositories
         {
             return await _context.Tags
                 .Where(condition ?? (_ => true))
+                .AsNoTracking()
                 .ToListAsync();
         }
     }

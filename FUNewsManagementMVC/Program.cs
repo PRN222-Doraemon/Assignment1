@@ -1,7 +1,5 @@
-using AutoMapper;
 using FUNewsManagement.Repositories.Extensions;
 using FUNewsManagement.services.Extensions;
-using FUNewsManagementMVC;
 using FUNewsManagementMVC.Authentications;
 using FUNewsManagementMVC.Extensions;
 

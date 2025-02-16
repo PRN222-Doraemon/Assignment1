@@ -91,7 +91,7 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: NewsArticles/Create
-        [Authorization("1")]
+        [Authorization(AppCts.Roles.Staff)]
         public async Task<IActionResult> Create()
         {
             ViewData["CategoryId"] = new SelectList(await _contextCategory.GetCategories(), "CategoryId", "CategoryName");
@@ -104,7 +104,7 @@ namespace FUNewsManagementMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizationAttribute("1")]
+        [Authorization(AppCts.Roles.Staff)]
         public async Task<IActionResult> Create(NewsArticleVM newsArticleVM)
         {
             if (ModelState.IsValid)
@@ -138,7 +138,7 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: NewsArticles/Edit/5
-        [AuthorizationAttribute("1")]
+        [Authorization(AppCts.Roles.Staff)]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -147,6 +147,7 @@ namespace FUNewsManagementMVC.Controllers
             }
             var newsArticle = await _contextNewsArticle.GetNewsArticleById(id);
             var newsArticleVM = _mapper.Map<NewsArticleVM>(newsArticle);
+
             if (newsArticle == null)
             {
                 return NotFound();
@@ -161,7 +162,7 @@ namespace FUNewsManagementMVC.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [AuthorizationAttribute("1")]
+        [Authorization(AppCts.Roles.Staff)]
         public async Task<IActionResult> Edit(NewsArticleVM newsArticleVM)
         {
             if (ModelState.IsValid)
@@ -174,7 +175,7 @@ namespace FUNewsManagementMVC.Controllers
 
                     if (newsArticleVM.TagIds != null && newsArticleVM.TagIds.Any())
                     {
-                        await _contextNewsTag.AddNewsTag(newsArticleVM.TagIds, newsArticle.NewsArticleId);
+                        await _contextNewsTag.UpdateNewsTags(newsArticleVM.TagIds, newsArticle.NewsArticleId);
                     }
 
                     TempData["success"] = "Successfully updated news article!";
@@ -191,7 +192,7 @@ namespace FUNewsManagementMVC.Controllers
         }
 
         // GET: NewsArticles/DeleteAsync/5
-        [AuthorizationAttribute("1")]
+        [Authorization(AppCts.Roles.Staff)]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)

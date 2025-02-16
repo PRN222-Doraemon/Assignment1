@@ -1,6 +1,5 @@
 ﻿using FUNewsManagement.BusinessObjects;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 
 namespace FUNewsManagement.Repositories.Data;
 

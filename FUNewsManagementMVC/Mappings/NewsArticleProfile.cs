@@ -6,9 +6,12 @@ namespace FUNewsManagementMVC.Mappings
 {
     public class NewsArticleProfile : Profile
     {
-        public NewsArticleProfile() {
+        public NewsArticleProfile()
+        {
 
-            CreateMap<NewsArticle, NewsArticleVM>().ReverseMap();
+            CreateMap<NewsArticle, NewsArticleVM>()
+                .ForMember(d => d.TagIds, o => o.MapFrom(s => s.NewsTags.Select(n => n.TagID)))
+                .ReverseMap();
         }
     }
 }
