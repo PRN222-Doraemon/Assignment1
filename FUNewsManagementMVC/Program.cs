@@ -19,8 +19,8 @@ builder.Services.AddApplicationLayer();
 // Add singleton adminAccount
 var adminAccount = new AdminCredentials()
 {
-    Email = builder.Configuration["AdminCredentials:email"],
-    Password = builder.Configuration["AdminCredentials:password"],
+    AccountEmail = builder.Configuration["AdminCredentials:email"],
+    AccountPassword = builder.Configuration["AdminCredentials:password"],
 };
 
 builder.Services.AddSingleton<AdminCredentials>(adminAccount);

@@ -1,6 +1,7 @@
 ﻿@{
 	ViewData["Title"] = "News Articles";
 	var userId = ViewContext.HttpContext.Session.GetInt32(AppCts.Session.UserId);
+	var userRole = ViewContext.HttpContext.Session.GetInt32(AppCts.Session.UserRole);
 }
 
 @* HTML *@
@@ -29,31 +30,29 @@
 				</button>
 				<div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
 					<ul class="navbar-nav flex-grow-1">
+
 						@if (userId != null)
 						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="NewsArticles" asp-action="Index">
-									News
-									Article
-								</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Category</a>
-							</li>
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="SystemAccounts"
-								   asp-action="Index">Manage User</a>
-							</li>
+							@if (userRole == int.Parse(AppCts.Roles.Admin))
+							{
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="SystemAccounts"
+									   asp-action="Index">Manage User</a>
+								</li>
+							}
+							else if (userRole == int.Parse(AppCts.Roles.Staff))
+							{
+								<li class="nav-item">
+									<a class="nav-link text-dark" asp-area="" asp-controller="Categories" asp-action="Index">Manage Category</a>
+								</li>
+							}
 						}
-						else
-						{
-							<li class="nav-item">
-								<a class="nav-link text-dark" asp-area="" asp-controller="NewsArticles" asp-action="Index">
-									News
-									Article
-								</a>
-							</li>
-						}
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-area="" asp-controller="NewsArticles" asp-action="Index">
+								News
+								Article
+							</a>
+						</li>
 					</ul>
 
 					<ul class="navbar-nav">

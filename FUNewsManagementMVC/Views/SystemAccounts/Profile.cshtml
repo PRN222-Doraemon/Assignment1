@@ -1,4 +1,4 @@
-﻿@model SystemAccount
+﻿@model SystemAccountVM
 
 @{
 	ViewData["Title"] = "Profile";
@@ -15,12 +15,15 @@
 			<ul class="list-group list-group-flush">
 				<li class="list-group-item"><strong>Email:</strong> @Model.AccountEmail</li>
 				<li class="list-group-item">
-					<strong>Role:</strong> @(Model.AccountRole == 1 ? "Staff" : (Model.AccountRole == 2 ? "Lecturer" : "Admin"))
+					<strong>Role:</strong> @(Model.AccountRole == int.Parse(AppCts.Roles.Staff)
+					? "Staff" : (Model.AccountRole != int.Parse(AppCts.Roles.Admin)
+					? "Lecturer"
+					: "Admin"))
 				</li>
 			</ul>
 
 			<div class="text-center mt-3">
-				<a asp-action="EditProfile" class="btn btn-primary">Edit Profile</a>
+				<a asp-action="Edit" asp-controller="SystemAccounts" class="btn btn-primary">Edit Profile</a>
 			</div>
 		</div>
 	</div>

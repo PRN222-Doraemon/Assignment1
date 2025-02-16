@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FUNewsManagement.BusinessObjects;
+using FUNewsManagementMVC.Authentications;
 using FUNewsManagementMVC.Models;
 
 namespace FUNewsManagementMVC.Mappings
@@ -9,6 +10,8 @@ namespace FUNewsManagementMVC.Mappings
         public SystemAccountProfile()
         {
             CreateMap<SystemAccountVM, SystemAccount>().ReverseMap();
+
+            CreateMap<AdminCredentials, SystemAccountVM>().ReverseMap();
         }
     }
 }

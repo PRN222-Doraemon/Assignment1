@@ -39,7 +39,8 @@ namespace FUNewsManagementMVC.Controllers
         public async Task<IActionResult> Index()
         {
             var accounts = await _systemAccountService.GetAllAccounts();
-            return View(accounts);
+            var systemAccountVM = _mapper.Map<List<SystemAccount>, List<SystemAccountVM>>(accounts);
+            return View(systemAccountVM);
         }
 
         // GET: SystemAccounts/Login
@@ -62,12 +63,12 @@ namespace FUNewsManagementMVC.Controllers
             if (ModelState.IsValid)
             {
                 // Check Admin login first
-                if (loginVM.AccountEmail.Equals(_adminCredentials.Email) &&
-                    loginVM.AccountPassword.Equals(_adminCredentials.Password))
+                if (loginVM.AccountEmail.Equals(_adminCredentials.AccountEmail) &&
+                    loginVM.AccountPassword.Equals(_adminCredentials.AccountPassword))
                 {
-                    HttpContext.Session.SetString(AppCts.Session.UserName, _adminCredentials.Username);
-                    HttpContext.Session.SetInt32(AppCts.Session.UserRole, int.Parse(_adminCredentials.Role));
-                    HttpContext.Session.SetInt32(AppCts.Session.UserId, _adminCredentials.Id);
+                    HttpContext.Session.SetString(AppCts.Session.UserName, _adminCredentials.AccountName);
+                    HttpContext.Session.SetInt32(AppCts.Session.UserRole, _adminCredentials.AccountRole);
+                    HttpContext.Session.SetInt32(AppCts.Session.UserId, _adminCredentials.AccountId);
                     return RedirectToAction("Index", "NewsArticles");
                 }
 
@@ -123,8 +124,8 @@ namespace FUNewsManagementMVC.Controllers
                 var existingAccount = await _systemAccountService.GetAccountById(systemAccountVM.AccountId);
                 if (existingAccount == null)
                 {
-                    TempData["error"] = "Account not existing. Please try again.";
-                    return RedirectToAction(nameof(Index));
+                    TempData["error"] = "Account is not existed. Please try again.";
+                    return NotFound();
                 }
 
                 // Update fields partially
@@ -144,12 +145,14 @@ namespace FUNewsManagementMVC.Controllers
             return View(systemAccountVM);
         }
 
-        // GET: SystemAccounts/DeleteAsync/5
+        // GET: SystemAccounts/Delete/5
+        [HttpGet]
         public async Task<IActionResult> Delete([FromRoute] short id)
         {
             var systemAccount = await _systemAccountService.GetAccountById(id);
             if (systemAccount == null)
             {
+                TempData["error"] = "Account is not existed. Please try again.";
                 return NotFound();
             }
 
@@ -157,26 +160,37 @@ namespace FUNewsManagementMVC.Controllers
             {
                 TempData["success"] = "Successfully deleted!";
             }
+
             else
             {
                 TempData["error"] = "Fail to delete!";
             }
-            ;
+
             return RedirectToAction(nameof(Index));
         }
 
         // GET: SystemAccounts/Profile
-        [AuthorizationAttribute]
+        [Authorization]
+        [HttpGet]
         public async Task<IActionResult> Profile()
         {
             var userId = (short)HttpContext.Session.GetInt32(AppCts.Session.UserId);
 
-            var user = _systemAccountService.GetAccountById(userId);
+            // If current user is Admin
+            if (userId == int.Parse(AppCts.Roles.Admin))
+            {
+                return View(_mapper.Map<AdminCredentials, SystemAccountVM>(_adminCredentials));
+            }
+
+            // If Staff or Lecturer
+            var user = await _systemAccountService.GetAccountById(userId);
+
             if (user == null)
             {
                 return NotFound();
             }
-            return View(user);
+
+            return View(_mapper.Map<SystemAccount, SystemAccountVM>(user));
         }
     }
 }

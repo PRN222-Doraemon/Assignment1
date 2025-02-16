@@ -5,10 +5,10 @@ namespace FUNewsManagementMVC.Models
     public class LoginVM
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "AccountEmail")]
         public string AccountEmail { get; set; }
         [Required]
-        [Display(Name = "Password")]
+        [Display(Name = "AccountPassword")]
         public string AccountPassword { get; set; }
 
     }
