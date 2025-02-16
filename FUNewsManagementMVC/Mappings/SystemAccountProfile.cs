@@ -12,6 +12,8 @@ namespace FUNewsManagementMVC.Mappings
             CreateMap<SystemAccountVM, SystemAccount>().ReverseMap();
 
             CreateMap<AdminCredentials, SystemAccountVM>().ReverseMap();
+
+            CreateMap<CreateSystemAccountVM, SystemAccount>().ReverseMap();
         }
     }
 }

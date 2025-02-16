@@ -80,7 +80,8 @@ public partial class FunewsManagementContext : DbContext
             entity.ToTable("SystemAccount");
 
             entity.Property(e => e.AccountId)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
+                .UseIdentityColumn()
                 .HasColumnName("AccountID");
             entity.Property(e => e.AccountEmail).HasMaxLength(70);
             entity.Property(e => e.AccountName).HasMaxLength(100);

@@ -48,6 +48,11 @@ namespace FUNewsManagement.Services
             return await _repo.GetAsync(a => a.AccountId == accountId);
         }
 
+        public async Task<SystemAccount?> GetAccountByEmail(string email)
+        {
+            return await _repo.GetAsync(a => a.AccountEmail!.ToLower().Equals(email.ToLower()));
+        }
+
         public async Task<List<SystemAccount>> GetAllAccounts(string? searchName = null)
         {
             return (List<SystemAccount>)await _repo

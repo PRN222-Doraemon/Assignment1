@@ -155,8 +155,17 @@ namespace FUNewsManagementMVC.Controllers
 
         // POST: SystemAccounts/Create
         [HttpPost]
-        public async Task<IActionResult> Create([FromForm] SystemAccount systemAccount)
+        public async Task<IActionResult> Create([FromForm] CreateSystemAccountVM createSystemAccountVM)
         {
+            // Check if email exists
+            if (await _systemAccountService.GetAccountByEmail(createSystemAccountVM.AccountEmail) != null)
+            {
+                TempData["error"] = "Email already exists. Please try again!";
+                ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
+                return View();
+            }
+
+            var systemAccount = _mapper.Map<CreateSystemAccountVM, SystemAccount>(createSystemAccountVM);
             if (await _systemAccountService.AddSystemAccount(systemAccount))
             {
                 TempData["success"] = "Successfully Created!";

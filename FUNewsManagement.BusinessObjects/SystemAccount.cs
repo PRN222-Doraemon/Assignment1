@@ -7,9 +7,12 @@ namespace FUNewsManagement.BusinessObjects;
 
 public partial class SystemAccount
 {
+    [Key]
     public short AccountId { get; set; }
+
     [Display(Name = "Name")]
     public string? AccountName { get; set; }
+
     [Display(Name = "Email")]
 
     public string? AccountEmail { get; set; }
