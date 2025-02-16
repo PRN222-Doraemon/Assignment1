@@ -27,14 +27,28 @@ namespace FUNewsManagement.Repositories
         // === Methods
         // =================================
 
-        public async Task<IEnumerable<NewsArticle>> GetAllAsync(Expression<Func<NewsArticle, bool>>? condition)
+        public async Task<IEnumerable<NewsArticle>> GetAllAsync(
+            Expression<Func<NewsArticle, bool>>? condition = null,
+            Expression<Func<NewsArticle, object>>? orderByAsc = null,
+            Expression<Func<NewsArticle, object>>? orderByDesc = null)
         {
-            return await _context.NewsArticles
+            IQueryable<NewsArticle> query = _context.NewsArticles
                     .Include(f => f.Category)
                     .Include(f => f.CreatedBy)
                     .Include(f => f.NewsTags).ThenInclude(p => p.Tag)
                     .Where(condition ?? (_ => true))
-                    .Where(f => f.NewsStatus == true).ToListAsync();
+                    .Where(f => f.NewsStatus == true);
+
+            if (orderByAsc != null)
+            {
+                query = query.OrderBy(orderByAsc);
+            }
+            else if (orderByDesc != null)
+            {
+                query = query.OrderByDescending(orderByDesc);
+            }
+
+            return await query.ToListAsync();
         }
 
         public async Task<NewsArticle?> GetAsync(Expression<Func<NewsArticle, bool>> condition)

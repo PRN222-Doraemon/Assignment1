@@ -12,7 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRepositoriesLayer(builder.Configuration);
 builder.Services.AddServicesLayer();
-builder.Services.AddApplicationLayer();
+builder.Services.AddApplicationLayer(builder.Configuration);
 
 // Add singleton adminAccount
 var adminAccount = new AdminCredentials()

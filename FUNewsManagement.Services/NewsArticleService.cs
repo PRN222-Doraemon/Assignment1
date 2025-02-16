@@ -50,7 +50,7 @@ namespace FUNewsManagement.Services
 
         public async Task<List<NewsArticle>> GetNewsArticleByCategoryId(int id)
         {
-            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CategoryId == id);
+            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CategoryId == id, null, null);
         }
 
         public async Task<NewsArticle?> GetNewsArticleById(string id)
@@ -61,18 +61,27 @@ namespace FUNewsManagement.Services
         public async Task<List<NewsArticle>> GetNewsArticles(string? searchName = null)
         {
             return (List<NewsArticle>)await _newsRepo
-                .GetAllAsync(n => string.IsNullOrEmpty(searchName) || n.NewsTitle!.Contains(searchName));
+                .GetAllAsync(n => string.IsNullOrEmpty(searchName) || n.NewsTitle!.Contains(searchName), null, null);
         }
 
         public async Task<List<NewsArticle>> GetNewsArticlesByCreatedUserId(short createdById)
         {
-            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CreatedById == createdById);
+            return (List<NewsArticle>)await _newsRepo.GetAllAsync(n => n.CreatedById == createdById, null, null);
         }
 
         public async Task<bool> UpdateNewsArticle(NewsArticle p)
         {
             p.ModifiedDate = DateTime.Now;
             return await _newsRepo.UpdateAsync(p) != null;
+        }
+
+        public async Task<List<NewsArticle>> GetNewsArticlesByDateRange(DateTime startDate, DateTime endDate)
+        {
+            var newsArticles = await _newsRepo.GetAllAsync(
+                n => startDate <= n.CreatedDate && n.CreatedDate <= endDate,
+                null,
+                n => n.CreatedDate!);
+            return (List<NewsArticle>)newsArticles;
         }
     }
 }

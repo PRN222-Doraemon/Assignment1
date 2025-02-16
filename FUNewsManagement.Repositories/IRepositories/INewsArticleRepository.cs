@@ -8,7 +8,10 @@ namespace FUNewsManagement.Repositories.IRepositories
         Task<NewsArticle?> AddAsync(NewsArticle newsArticle);
         Task<NewsArticle?> UpdateAsync(NewsArticle newsArticle);
         Task<NewsArticle?> DeleteAsync(NewsArticle newsArticle);
-        Task<IEnumerable<NewsArticle>> GetAllAsync(Expression<Func<NewsArticle, bool>>? condition);
+        Task<IEnumerable<NewsArticle>> GetAllAsync(
+            Expression<Func<NewsArticle, bool>>? condition,
+            Expression<Func<NewsArticle, object>>? orderByAsc,
+            Expression<Func<NewsArticle, object>>? orderByDesc);
         Task<NewsArticle?> GetAsync(Expression<Func<NewsArticle, bool>> condition);
     }
 }

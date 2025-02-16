@@ -1,8 +1,10 @@
-﻿namespace FUNewsManagementMVC.Extensions
+﻿using Syncfusion.Licensing;
+
+namespace FUNewsManagementMVC.Extensions
 {
     public static partial class ServiceCollectionExtensions
     {
-        public static void AddApplicationLayer(this IServiceCollection services)
+        public static void AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
         {
             // Add Automapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -14,6 +16,9 @@
                 options.Cookie.HttpOnly = true; // For sercurity
                 options.Cookie.IsEssential = true; // Ensure session cookie is always created
             });
+
+            // Add Syncfusion
+            SyncfusionLicenseProvider.RegisterLicense(configuration["Syncfusion:LicenseKey"]);
         }
     }
 }

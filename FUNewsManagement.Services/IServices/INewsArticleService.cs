@@ -11,5 +11,6 @@ namespace FUNewsManagement.Services.IServices
         Task<List<NewsArticle>> GetNewsArticlesByCreatedUserId(short createdById);
         Task<List<NewsArticle>> GetNewsArticleByCategoryId(int id);
         Task<NewsArticle?> GetNewsArticleById(string id);
+        Task<List<NewsArticle>> GetNewsArticlesByDateRange(DateTime startDate, DateTime endDate);
     }
 }
