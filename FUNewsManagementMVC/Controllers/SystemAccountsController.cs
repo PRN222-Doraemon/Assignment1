@@ -113,7 +113,7 @@ namespace FUNewsManagementMVC.Controllers
             return View(systemAccountVM);
         }
 
-        // POST: SystemAccounts/Edit/5
+        // POST: SystemAccounts/Edit
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(SystemAccountVM systemAccountVM)
@@ -143,6 +143,31 @@ namespace FUNewsManagementMVC.Controllers
 
             ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
             return View(systemAccountVM);
+        }
+
+        // GET: SystemAccounts/Create
+        [HttpGet]
+        public IActionResult Create()
+        {
+            ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
+            return View();
+        }
+
+        // POST: SystemAccounts/Create
+        [HttpPost]
+        public async Task<IActionResult> Create([FromForm] SystemAccount systemAccount)
+        {
+            if (await _systemAccountService.AddSystemAccount(systemAccount))
+            {
+                TempData["success"] = "Successfully Created!";
+            }
+
+            else
+            {
+                TempData["error"] = "Fail to create!";
+            }
+
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: SystemAccounts/Delete/5

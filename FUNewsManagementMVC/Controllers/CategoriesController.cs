@@ -26,7 +26,7 @@ namespace FUNewsManagementMVC.Controllers
         // === Actions
         // =================================
 
-        // GET: Categories
+        // GET: Categories?searchName=abc
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] string? searchName)
         {
