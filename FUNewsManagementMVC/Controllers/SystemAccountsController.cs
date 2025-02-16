@@ -1,4 +1,5 @@
-﻿using FUNewsManagement.BusinessObjects;
+﻿using AutoMapper;
+using FUNewsManagement.BusinessObjects;
 using FUNewsManagement.Services.IServices;
 using FUNewsManagementMVC.Authentications;
 using FUNewsManagementMVC.Extensions;
@@ -17,17 +18,17 @@ namespace FUNewsManagementMVC.Controllers
 
         private readonly ISystemAccountService _systemAccountService;
         private readonly AdminCredentials _adminCredentials;
+        private readonly IMapper _mapper;
 
         // ===========================
         // === Constructors
         // ===========================
 
-        public SystemAccountsController(
-            ISystemAccountService systemAccountService,
-            AdminCredentials adminCredentials)
+        public SystemAccountsController(ISystemAccountService systemAccountService, AdminCredentials adminCredentials, IMapper mapper)
         {
             _systemAccountService = systemAccountService;
             _adminCredentials = adminCredentials;
+            _mapper = mapper;
         }
 
         // ===========================
@@ -99,23 +100,37 @@ namespace FUNewsManagementMVC.Controllers
         [Authorization(AppCts.Roles.Admin)]
         public async Task<IActionResult> Edit([FromRoute] short id)
         {
-            var systemAccount = await _systemAccountService.GetAccountById(id);
-            if (systemAccount == null)
+            var existingSystemAccount = await _systemAccountService.GetAccountById(id);
+            if (existingSystemAccount == null)
             {
                 return NotFound();
             }
+
+            SystemAccountVM systemAccountVM = _mapper.Map<SystemAccount, SystemAccountVM>(existingSystemAccount);
+
             ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
-            return View(systemAccount);
+            return View(systemAccountVM);
         }
 
         // POST: SystemAccounts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(SystemAccount systemAccount)
+        public async Task<IActionResult> Edit(SystemAccountVM systemAccountVM)
         {
             if (ModelState.IsValid)
             {
-                if (await _systemAccountService.UpdateSystemAccount(systemAccount))
+                // Check existing account, and to prevent update password
+                var existingAccount = await _systemAccountService.GetAccountById(systemAccountVM.AccountId);
+                if (existingAccount == null)
+                {
+                    TempData["error"] = "Account not existing. Please try again.";
+                    return RedirectToAction(nameof(Index));
+                }
+
+                // Update fields partially
+                _mapper.Map<SystemAccountVM, SystemAccount>(systemAccountVM, existingAccount);
+
+                if (await _systemAccountService.UpdateSystemAccount(existingAccount))
                 {
                     TempData["success"] = "Successfully updated!";
                 }
@@ -124,7 +139,9 @@ namespace FUNewsManagementMVC.Controllers
                     TempData["error"] = "Fail to update!";
                 }
             }
-            return View(systemAccount);
+
+            ViewData["AccountRoleId"] = new SelectList(RolesExtensions.GetRoleList(), "Value", "Text");
+            return View(systemAccountVM);
         }
 
         // GET: SystemAccounts/DeleteAsync/5

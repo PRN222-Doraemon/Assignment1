@@ -6,16 +6,17 @@ namespace FUNewsManagementMVC.Extensions
 {
     public class RolesExtensions
     {
-        public static List<SelectListItem> GetRoleList()
+        public static IEnumerable<SelectListItem> GetRoleList()
         {
-            return Enum.GetValues(typeof(AccountRoles))
-                .Cast<AccountRoles>()
-                .Select(r => new SelectListItem
-                {
-                    Value = ((int)r).ToString(),
-                    Text = r.ToString()
-                })
-                .ToList();
+            return new List<(int, string)>()
+            {
+                (int.Parse(AppCts.Roles.Lecturer), nameof(AppCts.Roles.Lecturer)),
+                (int.Parse(AppCts.Roles.Staff),  nameof(AppCts.Roles.Staff))
+            }.Select(r => new SelectListItem()
+            {
+                Value = r.Item1.ToString(),
+                Text = r.Item2,
+            });
         }
     }
 }
