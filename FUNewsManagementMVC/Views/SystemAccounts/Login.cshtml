@@ -2,27 +2,25 @@
 
 @* === HTML ==================================  *@
 
-<form method="post" asp-action="Login" asp-controller="SystemAccounts">
-	<div class="container shadow border p-4">
-		<div class="row text-center">
-			<h1>Login</h1>
+<div class="d-flex justify-content-center align-items-center">
+	<form method="post" asp-action="Login" asp-controller="SystemAccounts" class="p-4 shadow-lg rounded-4 bg-white text-center w-100" style="max-width: 400px;">
+		<h1 class="mb-4 fw-bold text-primary">Login</h1>
+
+		<div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+		<div class="mb-3">
+			<input asp-for="@Model.AccountEmail" class="form-control form-control-lg rounded-3" placeholder="Email" />
+			<span asp-validation-for="@Model.AccountEmail" class="text-danger"></span>
 		</div>
-		<div asp-validation-summary="ModelOnly"></div>
-		<div class="row">
-			<div class="col-12 col-md-6 offset-md-3 pb-3">
-				<input asp-for="@Model.AccountEmail" class="form-control" placeholder="Email..." />
-				<span asp-validation-for="@Model.AccountEmail" class="text-danger"></span>
-			</div>
-			<div class="col-12 col-md-6 offset-md-3 pb-3">
-				<input asp-for="@Model.AccountPassword" class="form-control" type="password" placeholder="Password..." />
-				<span asp-validation-for="@Model.AccountPassword" class="text-danger"></span>
-			</div>
-			<div class="col-12 col-md-6 offset-md-3 pb-2">
-				<button type="submit" class="form-control btn btn-success" value="Submit">Login</button>
-			</div>
+
+		<div class="mb-3">
+			<input asp-for="@Model.AccountPassword" class="form-control form-control-lg rounded-3" type="password" placeholder="Password" />
+			<span asp-validation-for="@Model.AccountPassword" class="text-danger"></span>
 		</div>
-	</div>
-</form>
+
+		<button type="submit" class="btn btn-lg btn-primary w-100 rounded-3">Login</button>
+	</form>
+</div>
 
 @* === Custom Script ========================== *@
 
