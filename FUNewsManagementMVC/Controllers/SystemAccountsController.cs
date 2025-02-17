@@ -226,5 +226,31 @@ namespace FUNewsManagementMVC.Controllers
 
             return View(_mapper.Map<SystemAccount, SystemAccountVM>(user));
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Profile(SystemAccountVM updateProfileVM)
+        {
+            var systemAccountProfile = await _systemAccountService.GetAccountById(updateProfileVM.AccountId);
+
+            if (systemAccountProfile == null)
+            {
+                TempData["success"] = "Account not existing. Please try again!";
+            }
+
+            // Patching fields
+            systemAccountProfile.AccountName = updateProfileVM.AccountName;
+            systemAccountProfile.AccountPassword = updateProfileVM.AccountPassword;
+
+            if (await _systemAccountService.UpdateSystemAccount(systemAccountProfile))
+            {
+                TempData["success"] = "Successfully updated!";
+            }
+            else
+            {
+                TempData["error"] = "Fail to updated. Please try again!";
+            }
+
+            return View(_mapper.Map<SystemAccount, SystemAccountVM>(systemAccountProfile));
+        }
     }
 }

@@ -19,5 +19,8 @@ namespace FUNewsManagementMVC.Models
         [Required]
         [Display(Name = "Role")]
         public int? AccountRole { get; set; }
+
+        [Display(Name = "Password")]
+        public string? AccountPassword { get; set; }
     }
 }

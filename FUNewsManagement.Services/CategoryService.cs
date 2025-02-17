@@ -38,7 +38,7 @@ namespace FUNewsManagement.Services
             var category = await _categoryRepo.GetAsync(c => c.CategoryId == id)
                 ?? throw new Exception($"Category with {id} not found!");
 
-            if (await _newsRepo.GetAsync(n => n.CategoryId == id) != null)
+            if (await _newsRepo.GetAsync(n => n.CategoryId == id && n.NewsStatus == true) != null)
             {
                 throw new Exception($"Cannot delete: The category is linked to one or more news articles");
             }
@@ -49,7 +49,9 @@ namespace FUNewsManagement.Services
 
         public async Task<List<Category>> GetCategories(string? searchName = null)
         {
-            return (List<Category>)await _categoryRepo.GetAllAsync(c => string.IsNullOrEmpty(searchName) || c.CategoryName.Contains(searchName));
+            return (List<Category>)await _categoryRepo
+                .GetAllAsync(c => string.IsNullOrEmpty(searchName) || c.CategoryName.Contains(searchName) &&
+                                c.IsActive == true);
         }
 
         public async Task<Category> GetCategoryById(short id)
